@@ -1,0 +1,30 @@
+url: https://github/lopezr/startProject
+
+reference:
+- title: internal 
+  contents:
+  - startProject-package
+- title: Create directory
+  desc: Functions used to create a project directory with sub-folders and templates
+- contents:
+  - startProject
+  - runApp_startProject
+- title: Templates
+  desc: Functions used to create additional templates
+- contents:
+  - makeMemoTemplate
+  - makeRmdTemplate
+  - makeRTemplate
+  - makeSasTemplate
+articles:
+- title: All vignettes
+  navbar: ~
+  contents:
+  - startProject
+  - lauchViaShinyApp
+  - additionalTemplates
+development:
+  mode: auto
+template:
+  params:
+    bootswatch: spacelab

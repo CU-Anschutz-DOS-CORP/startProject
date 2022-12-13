@@ -1,0 +1,36 @@
+---
+title: "Creating additional templates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating additional templates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+After you have created a project directory, you can add additional templates as needed. 
+
+`makeMemoTemplate()`, `makeRTemplate()`, `makeRmdTemplate()`, and `makeSasTemplate()` will generate .docx, .R, .Rmd and .sas templates, respectively. 
+
+Below you can see an example for making an R template; each template function has a similar call.
+
+```{r, eval = FALSE}
+makeRTemplate(r.dir = getwd(), 
+              r.name = "myNewRProgram", 
+              proj.name = "DemoProject", 
+              proj.num = NULL,
+              start.date = format(Sys.Date(), "%B %d, %Y"), 
+              version = "1.2", 
+              client = "John Smith",
+              client.dept = "Testing Department", 
+              main.statistician = "Rocio Lopez", 
+              stats.collab = NULL,
+              r.purpose = "Adding x, y and z", 
+              r.notes = NULL)
+```

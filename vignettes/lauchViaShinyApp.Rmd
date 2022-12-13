@@ -1,0 +1,58 @@
+---
+title: "Running startProject via shiny app"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Running startProject via shiny app}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# How to run the app
+
+## From within RStudio
+
+You can also launch a local Shiny app that will facilitate using `startProject()`:
+
+```{r, eval = FALSE}
+runApp_startProject()
+```
+
+If running on RStudio, the app will appear in the pane viewer but you can change the browser of choice (see documentation for details). 
+
+## From outside RStudio
+
+For ease of use, you can create an executable shortcut using the `shinyShortcut` package.
+
+```{r, eval = FALSE}
+# install.packages("shinyShortcut")
+shinyShortcut::shinyShortcut(
+    shinyDirectory = system.file("application", package = "startProject"), 
+    OS = "windows", gitIgnore=TRUE)
+```
+
+This will create a .shiny_run folder containing the executable file in the same location as the application files. You can double click on that file to run the app on your default browser. 
+
+For easier access to this executable file, you can copy and rename the file in a location of choice.
+
+```{r, eval = FALSE}
+file.copy(
+    paste0(system.file("application", package = "startProject"), "/.shiny_run/shinyShortCut.cmd"), 
+    "C:/Users/LopezmRo/Desktop",
+    overwrite = TRUE) 
+    
+file.rename(
+    "C:/Users/LopezmRo/Desktop/shinyShortCut.cmd", 
+    "C:/Users/LopezmRo/Desktop/startProject.cmd")
+```
+
+# User interface
+Once launched, the app interface looks like this:
+
+![ShinyApp](https://raw.githubusercontent.com/lopezr/public-files/main/startProject/shinyAppUi.png)
