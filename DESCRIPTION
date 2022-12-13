@@ -1,0 +1,29 @@
+Package: startProject
+Type: Package
+Title: Create a Project Directory and Templates
+Version: 0.1.0
+Authors@R: person("Rocio", "Lopez", email = "Rocio.LopezMoscoso@cuanschutz.edu",
+    role = c("aut", "cre"))
+Description: This package has several functions to create a project directory 
+    along with sub-folders and document templates (.docx, .R, .Rmd and .sas). 
+    The initial start.project function can be run from the R console or as a 
+    local shiny app.
+License: GPL-3 + file LICENSE
+URL: https://github.com/lopezr/startProject
+BugReports: https://github.com/lopezr/startProject/issues
+Imports:
+    officer,
+    R.utils,
+    rstudioapi,
+    shiny,
+    shinyjs,
+    utils
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.2
+Suggests: 
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

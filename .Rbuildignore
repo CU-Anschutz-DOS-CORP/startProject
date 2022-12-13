@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj.user$
+^docs$
+^pkgdown$
+^dev$
+^supportFiles$
+^vignettes
+^README.Rmd
+^NEWS.Rmd
+^_pkgdown\.yml$
