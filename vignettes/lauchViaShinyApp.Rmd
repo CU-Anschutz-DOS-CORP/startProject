@@ -44,12 +44,12 @@ For easier access to this executable file, you can copy and rename the file in a
 ```{r, eval = FALSE}
 file.copy(
     paste0(system.file("application", package = "startProject"), "/.shiny_run/shinyShortCut.cmd"), 
-    "C:/Users/LopezmRo/Desktop",
+    "C:/Users/userid/Desktop",
     overwrite = TRUE) 
     
 file.rename(
-    "C:/Users/LopezmRo/Desktop/shinyShortCut.cmd", 
-    "C:/Users/LopezmRo/Desktop/startProject.cmd")
+    "C:/Users/userid/Desktop/shinyShortCut.cmd", 
+    "C:/Users/userid/Desktop/startProject.cmd")
 ```
 
 # User interface
