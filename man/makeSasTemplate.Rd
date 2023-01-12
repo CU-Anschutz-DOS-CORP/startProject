@@ -44,7 +44,7 @@ client(s) to be included in the template header.}
 \item{main.statistician}{NULL or a character string providing the name of the
 primary statistician. This will be used in the template header.}
 
-\item{stats.collab}{NULL or a character string providing additional QHS
+\item{stats.collab}{NULL or a character string providing additional 
 collaborators to be included as authors in the template header.}
 
 \item{sas.purpose}{NULL or a character string providing the purpose for the

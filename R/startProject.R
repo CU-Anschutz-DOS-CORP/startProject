@@ -21,7 +21,7 @@
 #'     client(s) to be included in the templates.
 #' @param main.statistician NULL or a character string providing the name of the
 #'     primary statistician. This will be used in the templates.
-#' @param stats.collab NULL or a character string providing additional QHS
+#' @param stats.collab NULL or a character string providing additional 
 #'     collaborators to be included as authors in the templates.
 #' @param subfolders A character string providing a comma delimited list of
 #'     sub-folders to be created. Defaults to "communications, data, graphs,

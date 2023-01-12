@@ -21,7 +21,7 @@
 #'     client(s) to be included in the template header.
 #' @param main.statistician NULL or a character string providing the name of the
 #'     primary statistician. This will be used in the template header.
-#' @param stats.collab NULL or a character string providing additional QHS
+#' @param stats.collab NULL or a character string providing additional 
 #'     collaborators to be included as authors in the template header.
 #' @param r.purpose NULL or a character string providing the purpose for the
 #'     generated template to be included in the template header.

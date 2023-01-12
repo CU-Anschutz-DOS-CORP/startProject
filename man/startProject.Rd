@@ -54,7 +54,7 @@ client(s) to be included in the templates.}
 \item{main.statistician}{NULL or a character string providing the name of the
 primary statistician. This will be used in the templates.}
 
-\item{stats.collab}{NULL or a character string providing additional QHS
+\item{stats.collab}{NULL or a character string providing additional 
 collaborators to be included as authors in the templates.}
 
 \item{subfolders}{A character string providing a comma delimited list of
