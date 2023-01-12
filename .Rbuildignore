@@ -8,3 +8,4 @@
 ^README.Rmd
 ^NEWS.Rmd
 ^_pkgdown\.yml$
+^\.Rproj\.user$
