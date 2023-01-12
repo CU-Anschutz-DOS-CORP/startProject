@@ -20,7 +20,7 @@
 #'     the client(s) to be included in the template header.
 #' @param main.statistician NULL or a character string providing the name of the
 #'     primary statistician. This will be used in the template header.
-#' @param stats.collab NULL or a character string providing additional QHS
+#' @param stats.collab NULL or a character string providing additional 
 #'     collaborators to be included as authors in the template header.
 #' @param memo.re NULL or a character string providing the subject line for the
 #'     memo template.
@@ -109,15 +109,16 @@ makeMemoTemplate <- function(memo.dir = getwd(), memo.name = NULL,
     staffInfo <- readLines(siFileConn)
     author <- staffInfo[1]
     if (length(grep("[(]?\\d{3}[ )-]?[ ]?\\d{3}[ -]?\\d{4}", staffInfo)) > 0) {
-      phone <- gsub("[^0-9.-]", "", staffInfo[grep("[(]?\\d{3}[ )-]?[ ]?\\d{3}[ -]?\\d{4}", staffInfo)])
+      phone <- paste0("Phone: ", gsub("[^0-9.-]", "", staffInfo[grep("[(]?\\d{3}[ )-]?[ ]?\\d{3}[ -]?\\d{4}", staffInfo)]))
     } else phone <- ""
     if (length(grep("@", staffInfo)) > 0) {
-        author.email <- regmatches(staffInfo, regexpr("[[:graph:]]+\\@[[:alpha:]]+\\.[[:alpha:]]{3}", staffInfo))
+        author.email <- paste0("Email: ", regmatches(staffInfo, regexpr("[[:graph:]]+\\@[[:alpha:]]+\\.[[:alpha:]]{3}", staffInfo)))
     } else author.email <- ""
   }
   else {
     author <- ""
     phone <- ""
+    author.email <- ""
   }
 
   ## Define folder and file permissions
@@ -153,8 +154,8 @@ makeMemoTemplate <- function(memo.dir = getwd(), memo.name = NULL,
     memo.doc <- officer::body_replace_all_text(memo.doc, "RESEC", memo.re, warn = FALSE)
     memo.doc <- officer:: footers_replace_all_text(memo.doc, "LOCATIONSEC", memo.file, warn = FALSE)
     memo.doc <- officer:: footers_replace_all_text(memo.doc, "CONTACTSEC1", author, warn = FALSE)
-    memo.doc <- officer:: footers_replace_all_text(memo.doc, "CONTACTSEC2", paste0("Email: ", author.email), warn = FALSE)
-    memo.doc <- officer:: footers_replace_all_text(memo.doc, "CONTACTSEC3", paste0("Phone: ", phone), warn = FALSE)
+    memo.doc <- officer:: footers_replace_all_text(memo.doc, "CONTACTSEC2", author.email, warn = FALSE)
+    memo.doc <- officer:: footers_replace_all_text(memo.doc, "CONTACTSEC3", phone, warn = FALSE)
 
     ## Save modified template
     print(memo.doc, target = paste0(memo.file))
