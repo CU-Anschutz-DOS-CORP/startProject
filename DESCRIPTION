@@ -9,8 +9,8 @@ Description: This package has several functions to create a project directory
     The initial start.project function can be run from the R console or as a 
     local shiny app.
 License: GPL-3 + file LICENSE
-URL: https://github.com/lopezr/startProject
-BugReports: https://github.com/lopezr/startProject/issues
+URL: https://cu-anschutz-dos-corp.github.io/startProject/index.html
+BugReports: https://github.com/CU-Anschutz-DOS-CORP/startProject/issues
 Imports:
     officer,
     R.utils,
