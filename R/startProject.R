@@ -29,6 +29,8 @@
 #' @param templates A character string providing a comma delimited list of
 #'     templates to be generated. Valid options are memo, R, Rmd and sas.
 #'     Defaults to "memo, R, Rmd, sas".
+#' @param structure A character string specifying the project layout to create.
+#'     Supported values are "legacy" and "snapshot". Defaults to "legacy".
 #' @param memo.name NULL or a character string specifying the name of the .Rmd
 #'     file. If NULL, the file will be named p[proj.num]_memo[currentdate]_v[version]
 #'     or p[proj.num]_memo[currentdate].
@@ -55,6 +57,18 @@
 #'     file to be included in the template header.
 #' @param sas.notes NULL or a character string providing additional notes to be
 #'     included in the SAS template header.
+#' @param analysis.subfolders A character vector providing the subfolders to
+#'     create inside each analysis snapshot directory. Defaults to the standard
+#'     Snapshot layout: orig_data, code, data, output_raw, graphs,
+#'     final_styled, and memo.
+#' @param sas.template.layout A character string specifying the SAS template layout.
+#'     Supported values are "single" and "multi". Defaults to "single".
+#' @param r.template.layout A character string specifying the R template layout.
+#'     Supported values are "single" and "multi". Defaults to "single".
+#' @param sas.header.style A character string specifying the SAS header style.
+#'     Supported values are "default" and "simple". Defaults to "default".
+#' @param r.header.style A character string specifying the R header style.
+#'     Supported values are "default" and "simple". Defaults to "default".
 #'
 #' @details
 #'     If the main directory, sub-folders and/or templates exist, the function
@@ -101,6 +115,14 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
                          main.statistician = NULL, stats.collab = NULL, 
                          subfolders = "communications, data, graphs, memo, orig_data, others, r, sas, temp",
                          templates = "memo, R, Rmd, sas",
+                         structure = c("legacy", "snapshot"),
+                         analysis.subfolders = c("orig_data", "code", "data",
+                                                 "output_raw", "graphs",
+                                                 "final_styled", "memo"),
+                         sas.template.layout = c("single", "multi"),
+                         r.template.layout = c("single", "multi"),
+                         sas.header.style = c("default", "simple"),
+                         r.header.style = c("default", "simple"),
                          memo.name = NULL, memo.re = NULL,
                          r.name = NULL, r.purpose = NULL, r.notes = NULL,
                          rmd.name = NULL, rmd.purpose = NULL, rmd.notes = NULL,
@@ -114,6 +136,20 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
   if (is.null(proj.name) | isTRUE(trimws(proj.name) == "")) {
     stop("Parameter 'proj.name' must be specified")
   }
+
+  structure <- match.arg(structure, c("legacy", "snapshot"))
+  sas.template.layout <- if (is.null(sas.template.layout)) {
+    if (!is.null(template.layout)) template.layout else "single"
+  } else {
+    match.arg(sas.template.layout, c("single", "multi"))
+  }
+  r.template.layout <- if (is.null(r.template.layout)) {
+    if (!is.null(template.layout)) template.layout else "single"
+  } else {
+    match.arg(r.template.layout, c("single", "multi"))
+  }
+  sas.header.style <- match.arg(sas.header.style, c("default", "simple"))
+  r.header.style <- match.arg(r.header.style, c("default", "simple"))
 
   ## Define variables from inputs
   if (length(grep(":\\\\", main.dir)) > 0) {
@@ -174,8 +210,59 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
   dir.create(paste0(main.dir, "/", proj.name))
   Sys.chmod(paste0(main.dir, "/", proj.name), mode = dir.permission, use_umask = FALSE)
 
-  ## Loop through subfolders list and create each
   proj.dir <- paste0(main.dir, "/", proj.name)
+
+  if (structure == "snapshot") {
+    snapshot_folders <- c(
+      "00_protocol_and_irb",
+      "01_data_specs",
+      "02_docs",
+      "03_include",
+      "04_manuscript",
+      "05_presentations",
+      "06_external_resources"
+    )
+
+    for (folder in snapshot_folders) {
+      folder_path <- file.path(proj.dir, folder)
+      if (!dir.exists(folder_path)) {
+        dir.create(folder_path, recursive = TRUE, showWarnings = FALSE)
+      }
+    }
+
+    homepath <- Sys.getenv("HOME")
+    readme_path <- file.path(proj.dir, "README.md")
+    if (!file.exists(readme_path)) {
+    if (file.exists(paste0(homepath, "/.basefile.md"))) {
+      readme_template <- paste0(homepath, "/.basefile.md")
+    } else if (file.exists(system.file("templates/basefile.md", package = "startProject"))) {
+      readme_template <- system.file("templates/basefile.md", package = "startProject")
+    }      
+      if (file.exists(readme_template)) {
+        readme_lines <- readLines(readme_template)
+        writeLines(readme_lines, readme_path)
+      } else {
+        writeLines("# Project README", readme_path)
+      }
+    }
+
+    makeSnapshot(project.dir = main.dir, proj.name = proj.name, proj.num = proj.num,
+                 start.date = start.date, version = version,
+                 client = client, client.dept = client.dept,
+                 main.statistician = main.statistician, stats.collab = stats.collab,
+                 templates = templates, memo.name = memo.name, memo.re = memo.re,
+                 analysis.subfolders = analysis.subfolders,
+                 r.name = r.name, r.purpose = r.purpose, r.notes = r.notes,
+                 rmd.name = rmd.name, rmd.purpose = rmd.purpose, rmd.notes = rmd.notes,
+                 sas.name = sas.name, sas.purpose = sas.purpose, sas.notes = sas.notes,
+                 sas.template.layout = sas.template.layout,
+                 r.template.layout = r.template.layout,
+                 sas.header.style = sas.header.style,
+                 r.header.style = r.header.style)
+    return(invisible(NULL))
+  }
+
+  ## Loop through subfolders list and create each
   folders <- gsub(" ", "", unlist(strsplit(subfolders, ",")))
 
   for (i in 1:length(folders)) {
@@ -248,7 +335,8 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
                     start.date = start.date, version = version,
                     client = client, client.dept = client.dept,
                     main.statistician = main.statistician, stats.collab = stats.collab,
-                    r.purpose = r.purpose, r.notes = r.notes)
+                    r.purpose = r.purpose, r.notes = r.notes,
+                    template.layout = r.template.layout, r.header.style = r.header.style)
     }
     if (length(grep('rmd', tolower(templates), fixed = TRUE)) > 0) {
       makeRmdTemplate(rmd.dir = r.dir, rmd.name = rmd.name,
@@ -274,7 +362,8 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
                     version = version, client = client,
                     client.dept = client.dept, main.statistician = main.statistician,
                     stats.collab = stats.collab, sas.purpose = sas.purpose,
-                    sas.notes = sas.notes)
+                    sas.notes = sas.notes, template.layout = sas.template.layout,
+                    sas.header.style = sas.header.style)
   }
 
 }
