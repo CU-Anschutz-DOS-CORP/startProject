@@ -1,4 +1,4 @@
-url: https://github/lopezr/startProject
+url: https://github.com/CU-Anschutz-DOS-CORP/startProject
 
 reference:
 - title: internal 
@@ -16,6 +16,7 @@ reference:
   - makeRmdTemplate
   - makeRTemplate
   - makeSasTemplate
+  - makeSnapshot
 articles:
 - title: All vignettes
   navbar: ~
@@ -26,5 +27,6 @@ articles:
 development:
   mode: auto
 template:
+  bootstrap: 5
   params:
     bootswatch: spacelab
