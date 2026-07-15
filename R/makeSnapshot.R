@@ -1,8 +1,7 @@
-#' Create a Snapshot-style project structure
+#' Create a snapshot-style project structure analysis subfolder
 #'
 #' @description
-#'     `makeSnapshot()` creates the Snapshot project directory structure with
-#'     a top-level README, a dated analysis snapshot folder, and template files
+#'     `makeSnapshot()` creates a dated analysis snapshot folder, and template files
 #'     placed in the snapshot code directory.
 #'
 #' @param project.dir A character string specifying the path where the project

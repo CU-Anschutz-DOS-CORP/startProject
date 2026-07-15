@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeSnapshot.R
 \name{makeSnapshot}
 \alias{makeSnapshot}
-\title{Create a Snapshot-style project structure}
+\title{Create a snapshot-style project structure analysis subfolder}
 \usage{
 makeSnapshot(
   project.dir = getwd(),
@@ -118,7 +118,6 @@ Supported values are "default" and "simple". Defaults to "default".}
 Supported values are "default" and "simple". Defaults to "default".}
 }
 \description{
-`makeSnapshot()` creates the Snapshot project directory structure with
-    a top-level README, a dated analysis snapshot folder, and template files
+`makeSnapshot()` creates a dated analysis snapshot folder, and template files
     placed in the snapshot code directory.
 }
