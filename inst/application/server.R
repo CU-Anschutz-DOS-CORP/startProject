@@ -130,7 +130,7 @@ server <- function(input, output) {
     }
 
     track <- myTryCatch(
-      startProject(main.dir = input$main.dir, proj.name = input$proj.name,
+      startProject::startProject(main.dir = input$main.dir, proj.name = input$proj.name,
                                  proj.num = input$proj.num, start.date = start_date_value,
                                  structure = input$structure,
                                  version = input$version, client = input$client,
