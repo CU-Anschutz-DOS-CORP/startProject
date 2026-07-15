@@ -54,19 +54,26 @@ ui <- shiny::shinyUI(fluidPage(
     width = '75%',
     placeholder = "If blank, project name used"),
 
-  textInput(
+  radioButtons(
+    inputId = 'structure',
+    label = 'Project structure',
+    choices = c('Legacy' = 'legacy', 'Snapshot' = 'snapshot'),
+    selected = 'legacy',
+    inline = TRUE),
+
+  dateInput(
     inputId = 'start.date',
-    label = 'Date in which the projects was started',
-    value = format(Sys.Date(), "%B %d, %Y"),
-    width = '75%',
-    placeholder = "If blank, defaults to today"),
+    label = 'Start date (defaults to today)',
+    value = Sys.Date(),
+    format = 'yyyy-mm-dd',
+    width = '75%'),
 
   textInput(
     inputId = 'version',
-    label = 'Version associated with project',
+    label = 'Current version of the project',
     value = "1",
     width = '75%',
-    placeholder = "Version associated with project"),
+    placeholder = "Current version of the project (e.g., 1, 2, 3)"),
 
   textInput(
     inputId = 'client',
@@ -124,6 +131,20 @@ ui <- shiny::shinyUI(fluidPage(
 
   tags$h3(id = "rHeader", "R template options"),
 
+  radioButtons(
+    inputId = 'r.template.layout',
+    label = 'R template layout',
+    choices = c('Single file' = 'single', 'Multi file' = 'multi'),
+    selected = 'single',
+    inline = TRUE),
+
+  radioButtons(
+    inputId = 'r.header.style',
+    label = 'R header style',
+    choices = c('Default' = 'default', 'Simple' = 'simple'),
+    selected = 'default',
+    inline = TRUE),
+
   textInput(
     inputId = 'r.name',
     label = 'Name for R template',
@@ -163,6 +184,20 @@ ui <- shiny::shinyUI(fluidPage(
     placeholder = "Additional notes to include in .Rmd template"),
 
   tags$h3(id = "sasHeader", "SAS template options"),
+
+  radioButtons(
+    inputId = 'sas.template.layout',
+    label = 'SAS template layout',
+    choices = c('Single file' = 'single', 'Multi file' = 'multi'),
+    selected = 'single',
+    inline = TRUE),
+
+  radioButtons(
+    inputId = 'sas.header.style',
+    label = 'SAS header style',
+    choices = c('Default' = 'default', 'Simple' = 'simple'),
+    selected = 'default',
+    inline = TRUE),
 
   textInput(
     inputId = 'sas.name',

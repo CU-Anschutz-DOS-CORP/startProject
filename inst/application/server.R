@@ -19,6 +19,31 @@ myTryCatch <- function(expr) {
 ###############################################################################
 server <- function(input, output) {
 
+  pkg_root <- if (file.exists("DESCRIPTION")) {
+    normalizePath(getwd(), winslash = "/", mustWork = TRUE)
+  } else if (file.exists(file.path("..", "DESCRIPTION"))) {
+    normalizePath(file.path(".."), winslash = "/", mustWork = TRUE)
+  } else {
+    NULL
+  }
+
+  if (!is.null(pkg_root)) {
+    template_files <- c(
+      "R/makeSnapshot.R",
+      "R/makeMemoTemplate.R",
+      "R/makeRTemplate.R",
+      "R/makeRmdTemplate.R",
+      "R/makeSasTemplate.R",
+      "R/startProject.R"
+    )
+    for (template_file in template_files) {
+      source_path <- file.path(pkg_root, template_file)
+      if (file.exists(source_path)) {
+        source(source_path, local = FALSE)
+      }
+    }
+  }
+
   ## Manage whether template options are shown or hidden
   observe({
 
@@ -35,12 +60,22 @@ server <- function(input, output) {
 
     if ("r" %in% input$templates) {
       shinyjs::show(id = "rHeader")
-      shinyjs::show(id = "r.name")
-      shinyjs::show(id = "r.purpose")
-      shinyjs::show(id = "r.notes")
+      shinyjs::show(id = "r.template.layout")
+      shinyjs::show(id = "r.header.style")
+      if (identical(input$r.template.layout, "multi")) {
+        shinyjs::hide(id = "r.name")
+        shinyjs::hide(id = "r.purpose")
+        shinyjs::hide(id = "r.notes")
+      } else {
+        shinyjs::show(id = "r.name")
+        shinyjs::show(id = "r.purpose")
+        shinyjs::show(id = "r.notes")
+      }
     }
     else {
       shinyjs::hide(id = "rHeader")
+      shinyjs::hide(id = "r.template.layout")
+      shinyjs::hide(id = "r.header.style")
       shinyjs::hide(id = "r.name")
       shinyjs::hide(id = "r.purpose")
       shinyjs::hide(id = "r.notes")
@@ -61,12 +96,22 @@ server <- function(input, output) {
 
     if ("sas" %in% input$templates) {
       shinyjs::show(id = "sasHeader")
-      shinyjs::show(id = "sas.name")
-      shinyjs::show(id = "sas.purpose")
-      shinyjs::show(id = "sas.notes")
+      shinyjs::show(id = "sas.template.layout")
+      shinyjs::show(id = "sas.header.style")
+      if (identical(input$sas.template.layout, "multi")) {
+        shinyjs::hide(id = "sas.name")
+        shinyjs::hide(id = "sas.purpose")
+        shinyjs::hide(id = "sas.notes")
+      } else {
+        shinyjs::show(id = "sas.name")
+        shinyjs::show(id = "sas.purpose")
+        shinyjs::show(id = "sas.notes")
+      }
     }
     else {
       shinyjs::hide(id = "sasHeader")
+      shinyjs::hide(id = "sas.template.layout")
+      shinyjs::hide(id = "sas.header.style")
       shinyjs::hide(id = "sas.name")
       shinyjs::hide(id = "sas.purpose")
       shinyjs::hide(id = "sas.notes")
@@ -78,9 +123,16 @@ server <- function(input, output) {
   message <- NULL
   createProj <- eventReactive(input$run, {
 
+    start_date_value <- if (is.null(input$start.date) || isTRUE(is.na(input$start.date))) {
+      format(Sys.Date(), "%B %d, %Y")
+    } else {
+      format(as.Date(input$start.date), "%B %d, %Y")
+    }
+
     track <- myTryCatch(
-      startProject::startProject(main.dir = input$main.dir, proj.name = input$proj.name,
-                                 proj.num = input$proj.num, start.date = input$start.date,
+      startProject(main.dir = input$main.dir, proj.name = input$proj.name,
+                                 proj.num = input$proj.num, start.date = start_date_value,
+                                 structure = input$structure,
                                  version = input$version, client = input$client,
                                  client.dept = input$client.dept, main.statistician = input$main.statistician,
                                  stats.collab = input$stats.collab,
@@ -88,7 +140,11 @@ server <- function(input, output) {
                                  memo.name = input$memo.name, memo.re = input$memo.re,
                                  r.name = input$r.name, r.purpose = input$r.purpose, r.notes = input$r.notes,
                                  rmd.name = input$rmd.name, rmd.purpose = input$rmd.purpose, rmd.notes = input$rmd.notes,
-                                 sas.name = input$sas.name, sas.purpose =input$sas.purpose, sas.notes = input$sas.notes)
+                                 sas.name = input$sas.name, sas.purpose = input$sas.purpose, sas.notes = input$sas.notes,
+                                 sas.template.layout = input$sas.template.layout,
+                                 r.template.layout = input$r.template.layout,
+                                 sas.header.style = input$sas.header.style,
+                                 r.header.style = input$r.header.style)
     )
 
     if (is.null(track$warning) & !(is.null(track$error))) {
