@@ -37,7 +37,8 @@ generate memo and code templates.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://cu-anschutz-dos-corp.github.io/startProject/index.html}
+  \item \url{https://github.com/CU-Anschutz-DOS-CORP/startProject}
+  \item \url{https://cu-anschutz-dos-corp.github.io/startProject/}
   \item Report bugs at \url{https://github.com/CU-Anschutz-DOS-CORP/startProject/issues}
 }
 
