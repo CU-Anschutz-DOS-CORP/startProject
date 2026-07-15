@@ -15,7 +15,9 @@ makeRTemplate(
   main.statistician = NULL,
   stats.collab = NULL,
   r.purpose = NULL,
-  r.notes = NULL
+  r.notes = NULL,
+  r.template.layout = c("single", "multi"),
+  r.header.style = c("default", "simple")
 )
 }
 \arguments{
@@ -52,6 +54,12 @@ generated template to be included in the template header.}
 
 \item{r.notes}{NULL or a character string providing additional notes to be
 included in the template header.}
+
+\item{r.template.layout}{A character string specifying the R template layout.
+Supported values are "single" and "multi". Defaults to "single".}
+
+\item{r.header.style}{A character string specifying the R header style.
+Supported values are "default" and "simple". Defaults to "default".}
 }
 \description{
 `makeRTemplate` will generate a .R file with a header containing

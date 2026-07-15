@@ -15,7 +15,9 @@ makeSasTemplate(
   main.statistician = NULL,
   stats.collab = NULL,
   sas.purpose = NULL,
-  sas.notes = NULL
+  sas.notes = NULL,
+  sas.template.layout = c("single", "multi"),
+  sas.header.style = c("default", "simple")
 )
 }
 \arguments{
@@ -52,6 +54,12 @@ generated template to be included in the template header.}
 
 \item{sas.notes}{NULL or a character string providing additional notes to be
 included in the template header.}
+
+\item{sas.template.layout}{A character string specifying the SAS template layout.
+Supported values are "single" and "multi". Defaults to "single".}
+
+\item{sas.header.style}{A character string specifying the SAS header style.
+Supported values are "default" and "simple". Defaults to "default".}
 }
 \description{
 `makSasTemplate` will generate a .sas file with a header containing

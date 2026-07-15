@@ -34,6 +34,14 @@ generate memo and code templates.
     Will link web page/tutorial here.
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://cu-anschutz-dos-corp.github.io/startProject/index.html}
+  \item Report bugs at \url{https://github.com/CU-Anschutz-DOS-CORP/startProject/issues}
+}
+
+}
 \author{
 Rocio Lopez, \email{Rocio.LopezMoscoso@cuanschutz.edu}
 }

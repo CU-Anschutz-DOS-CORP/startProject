@@ -16,6 +16,13 @@ startProject(
   stats.collab = NULL,
   subfolders = "communications, data, graphs, memo, orig_data, others, r, sas, temp",
   templates = "memo, R, Rmd, sas",
+  structure = c("legacy", "snapshot"),
+  analysis.subfolders = c("orig_data", "code", "data", "output_raw", "graphs",
+    "final_styled", "memo"),
+  sas.template.layout = c("single", "multi"),
+  r.template.layout = c("single", "multi"),
+  sas.header.style = c("default", "simple"),
+  r.header.style = c("default", "simple"),
   memo.name = NULL,
   memo.re = NULL,
   r.name = NULL,
@@ -64,6 +71,26 @@ memo, orig_data, others, r, sas, temp".}
 \item{templates}{A character string providing a comma delimited list of
 templates to be generated. Valid options are memo, R, Rmd and sas.
 Defaults to "memo, R, Rmd, sas".}
+
+\item{structure}{A character string specifying the project layout to create.
+Supported values are "legacy" and "snapshot". Defaults to "legacy".}
+
+\item{analysis.subfolders}{A character vector providing the subfolders to
+create inside each analysis snapshot directory. Defaults to the standard
+Snapshot layout: orig_data, code, data, output_raw, graphs,
+final_styled, and memo.}
+
+\item{sas.template.layout}{A character string specifying the SAS template layout.
+Supported values are "single" and "multi". Defaults to "single".}
+
+\item{r.template.layout}{A character string specifying the R template layout.
+Supported values are "single" and "multi". Defaults to "single".}
+
+\item{sas.header.style}{A character string specifying the SAS header style.
+Supported values are "default" and "simple". Defaults to "default".}
+
+\item{r.header.style}{A character string specifying the R header style.
+Supported values are "default" and "simple". Defaults to "default".}
 
 \item{memo.name}{NULL or a character string specifying the name of the .Rmd
 file. If NULL, the file will be named p[proj.num]_memo[currentdate]_v[version]
