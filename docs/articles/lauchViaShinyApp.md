@@ -1,0 +1,56 @@
+# Running startProject via shiny app
+
+## How to run the app
+
+### From within RStudio
+
+You can also launch a local Shiny app that will facilitate using
+[`startProject()`](https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/startProject.md):
+
+``` r
+
+runApp_startProject()
+```
+
+If running on RStudio, the app will appear in the pane viewer but you
+can change the browser of choice (see documentation for details).
+
+### From outside RStudio
+
+For ease of use, you can create an executable shortcut using the
+`shinyShortcut` package.
+
+``` r
+
+# install.packages("shinyShortcut")
+shinyShortcut::shinyShortcut(
+    shinyDirectory = system.file("application", package = "startProject"), 
+    OS = "windows", gitIgnore=TRUE)
+```
+
+This will create a .shiny_run folder containing the executable file in
+the same location as the application files. You can double click on that
+file to run the app on your default browser.
+
+For easier access to this executable file, you can copy and rename the
+file in a location of choice.
+
+``` r
+
+file.copy(
+    paste0(system.file("application", package = "startProject"), "/.shiny_run/shinyShortCut.cmd"), 
+    "C:/Users/userid/Desktop",
+    overwrite = TRUE) 
+    
+file.rename(
+    "C:/Users/userid/Desktop/shinyShortCut.cmd", 
+    "C:/Users/userid/Desktop/startProject.cmd")
+```
+
+## User interface
+
+Once launched, the app interface looks like this:
+
+![ShinyApp](https://raw.githubusercontent.com/lopezr/public-files/main/startProject/shinyAppUi.png)
+
+ShinyApp

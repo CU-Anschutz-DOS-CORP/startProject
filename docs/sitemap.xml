@@ -1,54 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://github/lopezr/startProject/404.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/articles/additionalTemplates.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/articles/lauchViaShinyApp.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/articles/startProject.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/index.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/makeMemoTemplate.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/makeRmdTemplate.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/makeRTemplate.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/makeSasTemplate.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/runApp_startProject.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/startProject-package.html</loc>
-  </url>
-  <url>
-    <loc>https://github/lopezr/startProject/reference/startProject.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/404.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/articles/additionalTemplates.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/articles/index.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/articles/lauchViaShinyApp.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/articles/startProject.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/authors.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/index.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/LICENSE-text.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/news/index.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/index.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/makeMemoTemplate.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/makeRmdTemplate.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/makeRTemplate.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/makeSasTemplate.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/makeSnapshot.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/runApp_startProject.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/startProject-package.html</loc></url>
+<url><loc>https://github.com/CU-Anschutz-DOS-CORP/startProject/reference/startProject.html</loc></url>
 </urlset>
+
