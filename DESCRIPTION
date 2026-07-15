@@ -1,7 +1,7 @@
 Package: startProject
 Type: Package
 Title: Create a Project Directory and Templates
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Rocio", "Lopez", email = "Rocio.LopezMoscoso@cuanschutz.edu",
     role = c("aut", "cre"))
 Description: This package has several functions to create a project directory 
