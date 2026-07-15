@@ -11,7 +11,8 @@ additional templates as needed.
 
 ## Installation
 
-You can install the development version of sociome from GitHub with:
+You can install the development version of `startProject` from GitHub
+with:
 
 ``` r
 # install.packages("remotes")
