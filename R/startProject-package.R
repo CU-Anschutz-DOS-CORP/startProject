@@ -31,5 +31,6 @@
 #' 
 #' @docType package
 #' @name startProject-package
+"_PACKAGE"
 NULL
 #> NULL
