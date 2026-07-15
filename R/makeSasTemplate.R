@@ -27,6 +27,10 @@
 #'     generated template to be included in the template header.
 #' @param sas.notes NULL or a character string providing additional notes to be
 #'     included in the template header.
+#' @param sas.template.layout A character string specifying the SAS template layout.
+#'     Supported values are "single" and "multi". Defaults to "single".
+#' @param sas.header.style A character string specifying the SAS header style.
+#'     Supported values are "default" and "simple". Defaults to "default".
 #'
 #' @details
 #' You can append code and comments under the generated header by either
@@ -49,7 +53,9 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
                             start.date = format(Sys.Date(), "%B %d, %Y"),
                             version = "1", client = NULL, client.dept = NULL,
                             main.statistician = NULL, stats.collab = NULL, 
-                            sas.purpose = NULL, sas.notes = NULL)
+                            sas.purpose = NULL, sas.notes = NULL,
+                            sas.template.layout = c("single", "multi"),
+                            sas.header.style = c("default", "simple"))
   {
 
   ## sas.dir must be provided and exist
@@ -59,6 +65,9 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
   if (!(dir.exists(sas.dir))) {
     stop("Path specified under 'sas.dir' does not exist")
   }
+
+  sas.template.layout <- match.arg(sas.template.layout)
+  sas.header.style <- match.arg(sas.header.style)
 
   ## Define variables from inputs
   if (is.null(start.date) | isTRUE(trimws(start.date) == "")) {
@@ -81,67 +90,100 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
         sas.name <- paste0("sas", date.stamp, "_v", version)
     }
   }
-  sas.file <- paste0(sas.dir, "/", sas.name, ".sas")
+
   homepath <- Sys.getenv("HOME")
-
-  ## Define folder and file permissions
-  file.permission <- "2770"
-
-  ##If file does not exist, define connection and create template file
-  if (file.exists(sas.file)) {
-    warning(paste0(sas.file, " already exists and will not be created"))
+  resolve_basefile <- function(basefile_name) {
+    candidates <- c(
+      file.path(homepath, paste0(".", basefile_name)),
+      file.path(homepath, basefile_name),
+      system.file("templates", basefile_name, package = "startProject")
+    )
+    for (candidate in candidates) {
+      if (file.exists(candidate)) {
+        return(readLines(candidate, warn = FALSE))
+      }
+    }
+    NULL
   }
 
-  else if (!(file.exists(sas.file))) {
+  build_header <- function(sas_file_path, purpose_text, notes_text) {
+    if (identical(sas.header.style, "simple")) {
+      header_lines <- c(
+        "/*****************************************************************************",
+        paste0("FILE:     ", basename(sas_file_path)),
+        paste0("LOCATION: ", dirname(sas_file_path)),
+        "______________________________________________________________________________",
+        " ",
+        paste0("AUTHOR:  ", if (!is.null(main.statistician) && !isTRUE(trimws(main.statistician) == "")) main.statistician else ""),
+        paste0("PROJECT: ", if (!is.null(proj.name) && !isTRUE(trimws(proj.name) == "")) proj.name else ""),
+        paste0("VERSION: ", if (!is.null(version) && !isTRUE(trimws(version) == "")) version else "1", " (", date.stamp, ")"),
+        "______________________________________________________________________________",
+        " ",
+        paste0("PURPOSE: ", purpose_text),
+        paste0("NOTES:   ", notes_text),
+        "______________________________________________________________________________",
+        " ",
+        "CONTENTS:",
+        "******************************************************************************/"
+      )
+    } else {
+      header_lines <- c(
+        "/******************************************************************************",
+        paste0("PROJECT: ", proj.name),
+        paste0("START DATE: ", start.date),
+        paste0("VERSION: ", version),
+        paste0("PROGRAM: ", sas_file_path),
+        "______________________________________________________________________________",
+        " ",
+        paste0("PRIMARY STATISTICIAN: ", main.statistician),
+        paste0("STATS COLLABORATORS: ", stats.collab),
+        "______________________________________________________________________________",
+        " ",
+        paste0("CLIENT: ", client),
+        paste0("CLIENT AFFILIATION: ", client.dept),
+        "______________________________________________________________________________",
+        " ",
+        paste0("PURPOSE:", sas.purpose),
+        paste0("NOTES: ", sas.notes),
+        "______________________________________________________________________________",
+        " ",
+        "DEPENDENCIES:",
+        "______________________________________________________________________________",
+        " ",
+        "CONTENTS:",
+        "******************************************************************************/"
+      )
+    }
+    header_lines
+  }
 
-    ## Bring in .basefile.sas if it exists
-    add <- NULL
-    if (file.exists(paste0(homepath, "/.basefile.sas"))) {
-      add <- readLines(paste0(homepath, "/.basefile.sas"))
-    } else if (file.exists(system.file("templates/basefile.sas", package = "startProject"))) {
-      add <- readLines(system.file("templates/basefile.sas", package = "startProject"))
+  file.permission <- "2770"
+
+  sas_files <- if (identical(sas.template.layout, "multi")) {
+    list(
+      list(name = "00_setup", purpose = if (!is.null(sas.purpose) && !isTRUE(trimws(sas.purpose) == "")) sas.purpose else "Defines libraries and global parameters. Required execution for all subsequent scripts.", notes = if (!is.null(sas.notes) && !isTRUE(trimws(sas.notes) == "")) sas.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_setup_basefile.sas"),
+      list(name = "01_data_management", purpose = "Creates, cleans, and prepares the analysis data.", notes = if (!is.null(sas.notes) && !isTRUE(trimws(sas.notes) == "")) sas.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_data_management_basefile.sas"),
+      list(name = "03_analysis", purpose = "Performs the primary analysis for the project.", notes = if (!is.null(sas.notes) && !isTRUE(trimws(sas.notes) == "")) sas.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_analysis_basefile.sas")
+    )
+  } else {
+    list(list(name = sas.name, purpose = if (!is.null(sas.purpose) && !isTRUE(trimws(sas.purpose) == "")) sas.purpose else "", notes = if (!is.null(sas.notes) && !isTRUE(trimws(sas.notes) == "")) sas.notes else "", basefile = "basefile.sas"))
+  }
+
+  for (sas_spec in sas_files) {
+    sas_file_name <- sas_spec$name
+    sas_file_path <- file.path(sas.dir, paste0(sas_file_name, ".sas"))
+
+    if (file.exists(sas_file_path)) {
+      warning(paste0(sas_file_path, " already exists and will not be created"))
+      next
     }
 
-    ## Open connection to new file
-    sasFileConn <- file(sas.file)
+    add <- resolve_basefile(sas_spec$basefile)
 
-    ## Write lines to file
-    writeLines(
-        c("/******************************************************************************",
-          paste0("PROJECT: ", proj.name),
-          paste0("START DATE: ", start.date),
-          paste0("VERSION: ", version),
-          paste0("PROGRAM: ", sas.file),
-          "______________________________________________________________________________",
-          " ",
-          paste0("PRIMARY STATISTICIAN: ", main.statistician),
-          paste0("STATS COLLABORATORS: ", stats.collab),
-          "______________________________________________________________________________",
-          " "  ,    
-          paste0("CLIENT: ", client),
-          paste0("CLIENT AFFILIATION: ", client.dept),
-          "______________________________________________________________________________",
-          " ",
-          paste0("PURPOSE:", sas.purpose),
-          paste0("NOTES: ", sas.notes),
-          "______________________________________________________________________________",
-          " ",
-          "DEPENDENCIES:",
-          "______________________________________________________________________________",
-          " ",
-          "CONTENTS:",
-          "******************************************************************************/",
-          add),
-        sasFileConn)
-
-    ## Close connection
+    sasFileConn <- file(sas_file_path)
+    writeLines(c(build_header(sas_file_path, sas_spec$purpose, sas_spec$notes), add), sasFileConn)
     close(sasFileConn)
-
-    ## Permissions
-    Sys.chmod(sas.file, mode = file.permission, use_umask = FALSE)
-
-    ## Message
-    #message(paste0(sas.file, " was successfully created"))
+    Sys.chmod(sas_file_path, mode = file.permission, use_umask = FALSE)
   }
 
 }

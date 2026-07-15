@@ -27,6 +27,10 @@
 #'     generated template to be included in the template header.
 #' @param r.notes NULL or a character string providing additional notes to be
 #'     included in the template header.
+#' @param r.template.layout A character string specifying the R template layout.
+#'     Supported values are "single" and "multi". Defaults to "single".
+#' @param r.header.style A character string specifying the R header style.
+#'     Supported values are "default" and "simple". Defaults to "default".
 #'
 #' @details
 #' You can append code and comments under the generated header by either
@@ -49,7 +53,9 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
                           start.date = format(Sys.Date(), "%B %d, %Y"),
                           version = "1", client = NULL, client.dept = NULL,
                           main.statistician = NULL, stats.collab = NULL, 
-                          r.purpose = NULL, r.notes = NULL)
+                          r.purpose = NULL, r.notes = NULL,
+                          r.template.layout = c("single", "multi"),
+                          r.header.style = c("default", "simple"))
   {
 
   ## r.dir must be provided and exist
@@ -59,6 +65,9 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
   if (!(dir.exists(r.dir))) {
     stop("Path specified under 'r.dir' does not exist")
   }
+
+  r.template.layout <- match.arg(r.template.layout)
+  r.header.style <- match.arg(r.header.style)
 
   ## Define variables from inputs
   if (is.null(start.date) | isTRUE(trimws(start.date) == "")) {
@@ -81,69 +90,95 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
         r.name <- paste0("r", date.stamp, "_v", version)
     }
   }
-  r.file <- paste0(r.dir, "/", r.name, ".R")
   homepath <- Sys.getenv("HOME")
-
-  ## Define folder and file permissions
-  file.permission <- "2770"
-
-  ##If file does not exist, define connection and create template file
-  if (file.exists(r.file)) {
-    warning(paste0(r.file, " already exists and will not be created"))
+  resolve_basefile <- function(basefile_name) {
+    candidates <- c(
+      file.path(homepath, paste0(".", basefile_name)),
+      file.path(homepath, basefile_name),
+      system.file("templates", basefile_name, package = "startProject")
+    )
+    for (candidate in candidates) {
+      if (file.exists(candidate)) {
+        return(readLines(candidate, warn = FALSE))
+      }
+    }
+    NULL
   }
 
-  else if (!(file.exists(r.file))) {
+  build_header <- function(r_file_path, purpose_text, notes_text) {
+    if (identical(r.header.style, "simple")) {
+      c(
+        "#*****************************************************************************",
+        paste0("#FILE:     ", basename(r_file_path)),
+        paste0("#LOCATION: ", dirname(r_file_path)),
+        "#_____________________________________________________________________________",
+        "#",
+        paste0("#AUTHOR:   ", if (!is.null(main.statistician) && !isTRUE(trimws(main.statistician) == "")) main.statistician else ""),
+        paste0("#PROJECT:  ", if (!is.null(proj.name) && !isTRUE(trimws(proj.name) == "")) proj.name else ""),
+        paste0("#VERSION:  ", if (!is.null(version) && !isTRUE(trimws(version) == "")) version else "1", " (", date.stamp, ")"),
+        "#_____________________________________________________________________________",
+        "#",
+        paste0("#PURPOSE:  ", purpose_text),
+        paste0("#NOTES:    ", notes_text),
+        "#_____________________________________________________________________________",
+        "#",
+        "#CONTENTS:",
+        "#*****************************************************************************"
+      )
+    } else {
+      c("#******************************************************************************",
+        paste0("#PROJECT: ", proj.name),
+        paste0("#START DATE: ", start.date),
+        paste0("#VERSION: ", version),
+        paste0("#PROGRAM: ", r_file_path),
+        "#_____________________________________________________________________________",
+        "#",
+        paste0("#PRIMARY STATISTICIAN: ", main.statistician),
+        paste0("#STATS COLLABORATORS: ", stats.collab),
+        "#_____________________________________________________________________________",
+        "#",
+        paste0("#CLIENT: ", client),
+        paste0("#CLIENT AFFILIATION: ", client.dept),
+        "#_____________________________________________________________________________",
+        "#",
+        paste0("#PURPOSE:", r.purpose),
+        paste0("#NOTES: ", r.notes),
+        "#_____________________________________________________________________________",
+        "#",
+        "#DEPENDENCIES:",
+        "#_____________________________________________________________________________",
+        "#",
+        "#CONTENTS:",
+        "#******************************************************************************")
+    }
+  }
 
-    ## Bring in .basefile.R if it exists
-    add <- NULL
-    if (file.exists(paste0(homepath, "/.basefile.r"))) {
-      add <- readLines(paste0(homepath, "/.basefile.r"))
-    } else if (file.exists(paste0(homepath, "/.basefile.R"))) {
-      add <- readLines(paste0(homepath, "/.basefile.R"))
-    } else if (file.exists(system.file("templates/basefile.R", package = "startProject"))) {
-      add <- readLines(system.file("templates/basefile.R", package = "startProject"))
+  file.permission <- "2770"
+
+  r_files <- if (identical(r.template.layout, "multi")) {
+    list(
+      list(name = "00_setup", purpose = if (!is.null(r.purpose) && !isTRUE(trimws(r.purpose) == "")) r.purpose else "Defines libraries and global parameters. Required execution for all subsequent scripts.", notes = if (!is.null(r.notes) && !isTRUE(trimws(r.notes) == "")) r.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_setup_basefile.R"),
+      list(name = "01_data_management", purpose = "Creates, cleans, and prepares the analysis data.", notes = if (!is.null(r.notes) && !isTRUE(trimws(r.notes) == "")) r.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_data_management_basefile.R"),
+      list(name = "03_analysis", purpose = "Performs the primary analysis for the project.", notes = if (!is.null(r.notes) && !isTRUE(trimws(r.notes) == "")) r.notes else "See root README.md for versioning, dependencies, and execution order.", basefile = "multi_analysis_basefile.R")
+    )
+  } else {
+    list(list(name = r.name, purpose = if (!is.null(r.purpose) && !isTRUE(trimws(r.purpose) == "")) r.purpose else "", notes = if (!is.null(r.notes) && !isTRUE(trimws(r.notes) == "")) r.notes else "", basefile = "basefile.R"))
+  }
+
+  for (r_spec in r_files) {
+    r_file_name <- r_spec$name
+    r_file_path <- file.path(r.dir, paste0(r_file_name, ".R"))
+
+    if (file.exists(r_file_path)) {
+      warning(paste0(r_file_path, " already exists and will not be created"))
+      next
     }
 
-    ## Open connection to new file
-    rFileConn <- file(r.file)
-
-    ## Write lines to file
-    writeLines(
-        c("#******************************************************************************",
-          paste0("#PROJECT: ", proj.name),
-          paste0("#START DATE: ", start.date),
-          paste0("#VERSION: ", version),
-          paste0("#PROGRAM: ", r.file),
-          "#_____________________________________________________________________________",
-          "#",
-          paste0("#PRIMARY STATISTICIAN: ", main.statistician),
-          paste0("#STATS COLLABORATORS: ", stats.collab),
-          "#_____________________________________________________________________________",
-          "#"  ,    
-          paste0("#CLIENT: ", client),
-          paste0("#CLIENT AFFILIATION: ", client.dept),
-          "#_____________________________________________________________________________",
-          "#",
-          paste0("#PURPOSE:", r.purpose),
-          paste0("#NOTES: ", r.notes),
-          "#_____________________________________________________________________________",
-          "#",
-          "#DEPENDENCIES:",
-          "#_____________________________________________________________________________",
-          "#",
-          "#CONTENTS:",
-          "#******************************************************************************",
-          add),
-        rFileConn)
-
-    ## Close connection
+    add <- resolve_basefile(r_spec$basefile)
+    rFileConn <- file(r_file_path)
+    writeLines(c(build_header(r_file_path, r_spec$purpose, r_spec$notes), add), rFileConn)
     close(rFileConn)
-
-    ## Permissions
-    Sys.chmod(r.file, mode = file.permission, use_umask = FALSE)
-
-    ## Message
-    #message(paste0(r.file, " was successfully created"))
+    Sys.chmod(r_file_path, mode = file.permission, use_umask = FALSE)
   }
 
 }
