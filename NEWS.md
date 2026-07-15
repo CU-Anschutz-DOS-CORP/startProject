@@ -4,3 +4,7 @@
 # startProject 0.1.0 <span style="font-size:smaller;color:lightgray">2022-12-13</span>
 
 - Initial package release.
+
+# startProject 0.2.0 <span style="font-size:smaller;color:lightgray">2026-07-15</span>
+
+- New snap shot directory structure is now available.
