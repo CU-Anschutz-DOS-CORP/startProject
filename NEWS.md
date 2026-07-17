@@ -8,3 +8,4 @@
 # startProject 0.2.0 <span style="font-size:smaller;color:lightgray">2026-07-15</span>
 
 - New snap shot directory structure is now available.
+- New Shiny app look.
