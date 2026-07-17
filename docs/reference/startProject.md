@@ -9,8 +9,8 @@ containing headers with project information.
 ``` r
 startProject(
   main.dir = getwd(),
-  proj.name = "project name",
-  proj.num = NULL,
+  proj.title = "Project Title",
+  proj.id = NULL,
   start.date = format(Sys.Date(), "%B %d, %Y"),
   version = "1",
   client = NULL,
@@ -48,15 +48,17 @@ startProject(
   A character string specifying the file path where the project
   directory will be created. Defaults to getwd().
 
-- proj.name:
+- proj.title:
 
-  A short character string providing the name or number to be used as
-  the directory name and in template headers.
+  A character string providing the full, descriptive project title to be
+  used in template headers and memo subject lines.
 
-- proj.num:
+- proj.id:
 
-  NULL or a character string providing a project number in the directory
-  name and templates. If NULL, \[proj.name\] will be used instead.
+  NULL or a short, clean character string providing a project identifier
+  to be used as the directory name and as a prefix for template
+  filenames. If NULL, a clean identifier will be automatically derived
+  from \[proj.title\].
 
 - start.date:
 
@@ -100,8 +102,8 @@ startProject(
 - templates:
 
   A character string providing a comma delimited list of templates to be
-  generated. Valid options are memo, R, Rmd and sas. Defaults to "memo,
-  R, Rmd, sas".
+  generated. Valid options are memo, readme, R, Rmd and sas. Defaults to
+  "memo, readme, R, Rmd, sas".
 
 - structure:
 
@@ -160,20 +162,20 @@ startProject(
 
   NULL or a character string specifying the name of the .Rmd file. If
   NULL, the file will be named
-  p\[proj.num\]\_memo\[currentdate\]\_v\[version\] or
-  p\[proj.num\]\_memo\[currentdate\].
+  \[proj.id\]\_memo\_\[currentdate\]\_v\[version\] or
+  \[proj.id\]\_memo\_\[currentdate\].
 
 - memo.re:
 
   NULL or a character string providing the subject line for the memo
-  template.
+  template. Defults to \[proj.title\].
 
 - r.name:
 
   NULL or a character string specifying the name of the .R template. If
   NULL, the file will be named
-  p\[proj.num\]\_r\[currentdate\]\_v\[version\] or
-  p\[proj.num\]\_r\[currentdate\].
+  \[proj.id\]\_r\_\[currentdate\]\_v\[version\] or
+  \[proj.id\]\_r\_\[currentdate\].
 
 - r.purpose:
 
@@ -189,8 +191,8 @@ startProject(
 
   NULL or a character string specifying the name of the .Rmd template.
   If NULL, the file will be named
-  p\[proj.num\]\_rmd\[currentdate\]\_v\[version\] or
-  p\[proj.num\]\_rmd\_\[currentdate\]
+  \[proj.id\]\_rmd\_\[currentdate\]\_v\[version\] or
+  \[proj.id\]\_rmd\_\[currentdate\].
 
 - rmd.purpose:
 
@@ -206,8 +208,8 @@ startProject(
 
   NULL or a character string specifying the name of the .sas file. If
   NULL, the file will be named
-  p\[proj.num\]\_sas\[currentdate\]\_v\[version\] or
-  p\[proj.num\]\_sas\[currentdate\].
+  \[proj.id\]\_sas\_\[currentdate\]\_v\[version\] or
+  \[proj.id\]\_sas\_\[currentdate\].
 
 - sas.purpose:
 
@@ -227,8 +229,9 @@ components that do not exist.
 
 Templates other than memo, sas, r and Rmd (case ignored) are not
 supported. If any templates are requested, the function will search for
-memo, rcode or r, sascode or sas sub-folders to store the templates; if
-these are not found, a templates sub-folder will be created.
+memo, rcode or r, sascode, sas or code (if snapshot) sub-folders to
+store the templates; if these are not found, a templates sub-folder may
+be created.
 
 You can modify the memo template by either creating a .basefile.docx
 file under your HOME directory or by modifying the
@@ -265,6 +268,6 @@ Rocio Lopez, <Rocio.LopezMoscoso@cuanschutz.edu>
 ## Examples
 
 ``` r
-if (FALSE) startProject(proj.name = "Example Project", client = "John Smith",
+if (FALSE) startProject(proj.title = "Example Project", client = "John Smith",
     client.dept = "Test Institute", main.statistician = "My Name Here") # \dontrun{}
 ```

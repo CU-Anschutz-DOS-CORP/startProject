@@ -10,7 +10,8 @@ makeRmdTemplate(
   rmd.dir = getwd(),
   rmd.name = NULL,
   rmd.output = "word",
-  proj.name = NULL,
+  proj.title = NULL,
+  proj.id = NULL,
   start.date = format(Sys.Date(), "%B %d, %Y"),
   version = "1",
   client = NULL,
@@ -33,18 +34,21 @@ makeRmdTemplate(
 
   NULL or a character string specifying the name of the .Rmd file. If
   NULL, the file will be named
-  p\[proj.name\]\_rmd\[currentdate\]\_v\[version\] or
-  rmd\[currentdate\].
+  \[proj.id\]\_rmd\[currentdate\]\_v\[version\] or rmd\[currentdate\].
 
 - rmd.output:
 
   A character string specifying the type of Rmarkdown output to be
-  created. Choices are: word, html or pdf. Defaults to word.
+  created. Choices are: word, html or pdf. Defaults to word. \#' @param
+  proj.title NULL or a character string providing the full, descriptive
+  project title to be used in template headers and memo subject lines.
 
-- proj.name:
+- proj.id:
 
-  NULL or a character string providing the name of the project to be
-  included in the template name and/or header.
+  NULL or a short, clean character string providing a project identifier
+  to be used as the directory name and as a prefix for template
+  filenames. If NULL, a clean identifier will be automatically derived
+  from \[proj.title\].
 
 - start.date:
 

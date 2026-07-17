@@ -36,7 +36,8 @@ sub-folder will be created.
 ``` r
 startProject(
   main.dir = Sys.getenv("HOME"), 
-  proj.name = "TestRProject", 
+  proj.title = "Example of startProject function"
+  proj.id = "TestRProject", 
   start.date = format(Sys.Date(), "%B %d, %Y"), 
   version = "1", 
   client = "John Smith",
@@ -96,9 +97,7 @@ The directory created will look like this:
         └── memo/                   <-- Written report for PI
 
 The project information (client, author, etc.) and template details
-(purpose, notes) are used to populate the templates. The templates
-created can be viewed
-[here](https://github.com/lopezr/public-files/tree/main/startProject).
+(purpose, notes) are used to populate the templates.
 
 ### shinyApp
 

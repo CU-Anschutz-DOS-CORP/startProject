@@ -9,7 +9,8 @@ any project information provided in the function call.
 makeSasTemplate(
   sas.dir = getwd(),
   sas.name = NULL,
-  proj.name = NULL,
+  proj.id = NULL,
+  proj.title = NULL,
   start.date = format(Sys.Date(), "%B %d, %Y"),
   version = "1",
   client = NULL,
@@ -34,13 +35,19 @@ makeSasTemplate(
 
   NULL or a character string specifying the name of the .sas file. If
   NULL, the file will be named
-  p\[proj.name\]\_sas\[currentdate\]\_v\[version\] or
-  sas\[currentdate\].
+  \[proj.id\]\_sas\[currentdate\]\_v\[version\] or sas\[currentdate\].
 
-- proj.name:
+- proj.id:
 
-  NULL or a character string providing the name of the project to be
-  included in the template name and/or header.
+  NULL or a short, clean character string providing a project identifier
+  to be used as the directory name and as a prefix for template
+  filenames. If NULL, a clean identifier will be automatically derived
+  from \[proj.title\].
+
+- proj.title:
+
+  A character string providing the full, descriptive project title to be
+  used in template headers and memo subject lines.
 
 - start.date:
 

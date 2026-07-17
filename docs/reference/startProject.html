@@ -11,7 +11,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">startProject</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,8 +53,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">startProject</span><span class="op">(</span></span>
 <span>  main.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  proj.name <span class="op">=</span> <span class="st">"project name"</span>,</span>
-<span>  proj.num <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  proj.title <span class="op">=</span> <span class="st">"Project Title"</span>,</span>
+<span>  proj.id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  start.date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%B %d, %Y"</span><span class="op">)</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"1"</span>,</span>
 <span>  client <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -94,14 +94,15 @@
 directory will be created. Defaults to getwd().</p></dd>
 
 
-<dt id="arg-proj-name">proj.name<a class="anchor" aria-label="anchor" href="#arg-proj-name"></a></dt>
-<dd><p>A short character string providing the name or number to be
-used as the directory name and in template headers.</p></dd>
+<dt id="arg-proj-title">proj.title<a class="anchor" aria-label="anchor" href="#arg-proj-title"></a></dt>
+<dd><p>A character string providing the full, descriptive project title
+to be used in template headers and memo subject lines.</p></dd>
 
 
-<dt id="arg-proj-num">proj.num<a class="anchor" aria-label="anchor" href="#arg-proj-num"></a></dt>
-<dd><p>NULL or a character string providing a project number in the
-directory name and templates. If NULL, [proj.name] will be used instead.</p></dd>
+<dt id="arg-proj-id">proj.id<a class="anchor" aria-label="anchor" href="#arg-proj-id"></a></dt>
+<dd><p>NULL or a short, clean character string providing a project identifier
+to be used as the directory name and as a prefix for template filenames.
+If NULL, a clean identifier will be automatically derived from [proj.title].</p></dd>
 
 
 <dt id="arg-start-date">start.date<a class="anchor" aria-label="anchor" href="#arg-start-date"></a></dt>
@@ -144,8 +145,8 @@ data, graphs, memo, orig_data, others, r, sas, temp" if structure="legacy".</p><
 
 <dt id="arg-templates">templates<a class="anchor" aria-label="anchor" href="#arg-templates"></a></dt>
 <dd><p>A character string providing a comma delimited list of
-templates to be generated. Valid options are memo, R, Rmd and sas.
-Defaults to "memo, R, Rmd, sas".</p></dd>
+templates to be generated. Valid options are memo, readme, R, Rmd and sas.
+Defaults to "memo, readme, R, Rmd, sas".</p></dd>
 
 
 <dt id="arg-structure">structure<a class="anchor" aria-label="anchor" href="#arg-structure"></a></dt>
@@ -204,19 +205,19 @@ Defaults to "default".</p></dd>
 
 <dt id="arg-memo-name">memo.name<a class="anchor" aria-label="anchor" href="#arg-memo-name"></a></dt>
 <dd><p>NULL or a character string specifying the name of the .Rmd
-file. If NULL, the file will be named p[proj.num]_memo[currentdate]_v[version]
-or p[proj.num]_memo[currentdate].</p></dd>
+file. If NULL, the file will be named [proj.id]_memo_[currentdate]_v[version]
+or [proj.id]_memo_[currentdate].</p></dd>
 
 
 <dt id="arg-memo-re">memo.re<a class="anchor" aria-label="anchor" href="#arg-memo-re"></a></dt>
 <dd><p>NULL or a character string providing the subject line for the
-memo template.</p></dd>
+memo template. Defults to [proj.title].</p></dd>
 
 
 <dt id="arg-r-name">r.name<a class="anchor" aria-label="anchor" href="#arg-r-name"></a></dt>
 <dd><p>NULL or a character string specifying the name of the .R template.
-If NULL, the file will be named p[proj.num]_r[currentdate]_v[version] or
-p[proj.num]_r[currentdate].</p></dd>
+If NULL, the file will be named [proj.id]_r_[currentdate]_v[version] or
+[proj.id]_r_[currentdate].</p></dd>
 
 
 <dt id="arg-r-purpose">r.purpose<a class="anchor" aria-label="anchor" href="#arg-r-purpose"></a></dt>
@@ -231,8 +232,8 @@ included in the R template header.</p></dd>
 
 <dt id="arg-rmd-name">rmd.name<a class="anchor" aria-label="anchor" href="#arg-rmd-name"></a></dt>
 <dd><p>NULL or a character string specifying the name of the .Rmd
-template. If NULL, the file will be named p[proj.num]_rmd[currentdate]_v[version]
-or p[proj.num]_rmd_[currentdate]</p></dd>
+template. If NULL, the file will be named [proj.id]_rmd_[currentdate]_v[version]
+or [proj.id]_rmd_[currentdate].</p></dd>
 
 
 <dt id="arg-rmd-purpose">rmd.purpose<a class="anchor" aria-label="anchor" href="#arg-rmd-purpose"></a></dt>
@@ -247,8 +248,8 @@ included in the Rmd template header.</p></dd>
 
 <dt id="arg-sas-name">sas.name<a class="anchor" aria-label="anchor" href="#arg-sas-name"></a></dt>
 <dd><p>NULL or a character string specifying the name of the .sas
-file. If NULL, the file will be named p[proj.num]_sas[currentdate]_v[version]
-or p[proj.num]_sas[currentdate].</p></dd>
+file. If NULL, the file will be named [proj.id]_sas_[currentdate]_v[version]
+or [proj.id]_sas_[currentdate].</p></dd>
 
 
 <dt id="arg-sas-purpose">sas.purpose<a class="anchor" aria-label="anchor" href="#arg-sas-purpose"></a></dt>
@@ -268,8 +269,8 @@ included in the SAS template header.</p></dd>
     that do not exist.</p>
 <p>Templates other than memo, sas, r and Rmd (case ignored) are not supported.
     If any templates are requested, the function will search for memo, rcode
-    or r, sascode or sas sub-folders to store the templates; if these are not
-    found, a templates sub-folder will be created.</p>
+    or r, sascode, sas or code (if snapshot) sub-folders to store the templates;
+    if these are not found, a templates sub-folder may be created.</p>
 <p>You can modify the memo template by either creating a .basefile.docx
     file under your HOME directory or by modifying the templates/memoTemplate
     contained in the package library. Note that the text use as placeholders
@@ -297,7 +298,7 @@ included in the SAS template header.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="fu">startProject</span><span class="op">(</span>proj.name <span class="op">=</span> <span class="st">"Example Project"</span>, client <span class="op">=</span> <span class="st">"John Smith"</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="fu">startProject</span><span class="op">(</span>proj.title <span class="op">=</span> <span class="st">"Example Project"</span>, client <span class="op">=</span> <span class="st">"John Smith"</span>,</span></span>
 <span class="r-in"><span>    client.dept <span class="op">=</span> <span class="st">"Test Institute"</span>, main.statistician <span class="op">=</span> <span class="st">"My Name Here"</span><span class="op">)</span> <span class="co"># \dontrun{}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

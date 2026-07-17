@@ -8,8 +8,8 @@ template files placed in the snapshot code directory.
 ``` r
 makeSnapshot(
   project.dir = getwd(),
-  proj.name = NULL,
-  proj.num = NULL,
+  proj.title = NULL,
+  proj.id = NULL,
   start.date = format(Sys.Date(), "%B %d, %Y"),
   version = "1",
   client = NULL,
@@ -45,13 +45,17 @@ makeSnapshot(
   A character string specifying the path where the project root will be
   created.
 
-- proj.name:
+- proj.title:
 
-  NULL or a character string providing the name of the project.
+  A character string providing the full, descriptive project title to be
+  used in template headers and memo subject lines.
 
-- proj.num:
+- proj.id:
 
-  NULL or a character string providing a project number.
+  NULL or a short, clean character string providing a project identifier
+  to be used as the directory name and as a prefix for template
+  filenames. If NULL, a clean identifier will be automatically derived
+  from \[proj.title\].
 
 - start.date:
 
