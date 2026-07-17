@@ -79,6 +79,16 @@ server <- function(input, output, session) { # Passed 'session' explicitly to en
         }
     })
     
+    ## Dynamically update the memo.re default when proj.title is provided
+    observe({
+        req(input$proj.title)
+        updateTextInput(
+            session = session, 
+            inputId = "memo.re", 
+            value = input$proj.title  # Fixed to pull from the UI input
+        )
+    })  
+    
     ## Manage whether template options are shown or hidden
     observe({
         
@@ -172,8 +182,8 @@ server <- function(input, output, session) { # Passed 'session' explicitly to en
         }
         
         track <- myTryCatch(
-            startProject::startProject(main.dir = input$main.dir, proj.name = input$proj.name,
-                                       proj.num = input$proj.num, start.date = start_date_value,
+            startProject::startProject(main.dir = input$main.dir, proj.title = input$proj.title,
+                                       proj.id = input$proj.id, start.date = start_date_value,
                                        structure = input$structure,
                                        snapshot.name = if(input$structure == "snapshot") input$snapshot.name else NULL,
                                        analysis.subfolders = if(input$structure == "snapshot") input$analysis_subfolders_vec else NULL,

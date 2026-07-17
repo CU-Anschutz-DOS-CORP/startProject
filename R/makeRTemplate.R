@@ -7,10 +7,13 @@
 #' @param r.dir A character string specifying the file path where the template
 #'     will be stored. Defaults to {getwd()}.
 #' @param r.name NULL or a character string specifying the name of the .R file.
-#'     If NULL, the file will be named p[proj.name]_r[currentdate]_v[version] or
+#'     If NULL, the file will be named [proj.id]_r[currentdate]_v[version] or
 #'     r[currentdate].
-#' @param proj.name NULL or a character string providing the name of the project
-#'    to be included in the template name and/or header.
+#' #' @param proj.title A character string providing the full, descriptive project title 
+#'     to be used in template headers and memo subject lines.
+#' @param proj.id NULL or a short, clean character string providing a project identifier 
+#'     to be used as the directory name and as a prefix for template filenames. 
+#'     If NULL, a clean identifier will be automatically derived from [proj.title].
 #' @param start.date NULL or a character string providing the date to be included
 #'     in the template header. Defaults to today's date.
 #' @param version NULL or a character string providing the project version to be
@@ -49,7 +52,8 @@
 #' @author Rocio Lopez, \email{Rocio.LopezMoscoso@cuanschutz.edu}
 #'
 #' @export
-makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
+makeRTemplate <- function(r.dir = getwd(), r.name = NULL, 
+                          proj.id = NULL, proj.title = NULL,
                           start.date = format(Sys.Date(), "%B %d, %Y"),
                           version = "1", client = NULL, client.dept = NULL,
                           main.statistician = NULL, stats.collab = NULL, 
@@ -78,14 +82,14 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
   }
   if (is.null(r.name) | isTRUE(trimws(r.name) == "")) {
     if (is.null(version) | isTRUE(trimws(version)) == "") {
-      if (!(is.null(proj.name)) | isFALSE(trimws(proj.name) == ""))
-        r.name <- paste0("p", proj.name, "_r", date.stamp)
+      if (!(is.null(proj.id)) | isFALSE(trimws(proj.id) == ""))
+        r.name <- paste0("p", proj.id, "_r", date.stamp)
       else
         r.name <- paste0("r", date.stamp)
     }
     else {
-      if (!(is.null(proj.name)) | isFALSE(trimws(proj.name) == ""))
-        r.name <- paste0("p", proj.name, "_r", date.stamp, "_v", version)
+      if (!(is.null(proj.id)) | isFALSE(trimws(proj.id) == ""))
+        r.name <- paste0("p", proj.id, "_r", date.stamp, "_v", version)
       else
         r.name <- paste0("r", date.stamp, "_v", version)
     }
@@ -114,7 +118,8 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
         "#_____________________________________________________________________________",
         "#",
         paste0("#AUTHOR:   ", if (!is.null(main.statistician) && !isTRUE(trimws(main.statistician) == "")) main.statistician else ""),
-        paste0("#PROJECT:  ", if (!is.null(proj.name) && !isTRUE(trimws(proj.name) == "")) proj.name else ""),
+        paste0("#PROJECT ID:  ", if (!is.null(proj.id) && !isTRUE(trimws(proj.id) == "")) proj.id else ""),
+        paste0("#TITLE: ", if (!is.null(proj.title) && !isTRUE(trimws(proj.title) == "")) proj.title else ""),
         paste0("#VERSION:  ", if (!is.null(version) && !isTRUE(trimws(version) == "")) version else "1", " (", date.stamp, ")"),
         "#_____________________________________________________________________________",
         "#",
@@ -127,7 +132,8 @@ makeRTemplate <- function(r.dir = getwd(), r.name = NULL, proj.name = NULL,
       )
     } else {
       c("#******************************************************************************",
-        paste0("#PROJECT: ", proj.name),
+        paste0("#PROJECT ID:  ", if (!is.null(proj.id) && !isTRUE(trimws(proj.id) == "")) proj.id else ""),
+        paste0("#TITLE: ", if (!is.null(proj.title) && !isTRUE(trimws(proj.title) == "")) proj.title else ""),
         paste0("#START DATE: ", start.date),
         paste0("#VERSION: ", version),
         paste0("#PROGRAM: ", r_file_path),

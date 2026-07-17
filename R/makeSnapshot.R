@@ -6,8 +6,11 @@
 #'
 #' @param project.dir A character string specifying the path where the project
 #'     root will be created.
-#' @param proj.name NULL or a character string providing the name of the project.
-#' @param proj.num NULL or a character string providing a project number.
+#' @param proj.title A character string providing the full, descriptive project title 
+#'     to be used in template headers and memo subject lines.
+#' @param proj.id NULL or a short, clean character string providing a project identifier 
+#'     to be used as the directory name and as a prefix for template filenames. 
+#'     If NULL, a clean identifier will be automatically derived from [proj.title].
 #' @param start.date NULL or a character string providing the date to be included
 #'     in templates. Defaults to today's date.
 #' @param version NULL or a character string providing the project version to be
@@ -73,7 +76,7 @@
 #'     Defaults to "default".
 #'
 #' @export
-makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NULL,
+makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NULL,
                          start.date = format(Sys.Date(), "%B %d, %Y"),
                          version = "1", client = NULL, client.dept = NULL,
                          main.statistician = NULL, stats.collab = NULL,
@@ -92,12 +95,12 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
                          r.header.style = c("default", "simple")) {
 
   sas.template.layout <- if (is.null(sas.template.layout)) {
-    if (!is.null(template.layout)) template.layout else "single"
+    "single"
   } else {
     match.arg(sas.template.layout, c("single", "multi"))
   }
   r.template.layout <- if (is.null(r.template.layout)) {
-    if (!is.null(template.layout)) template.layout else "single"
+    "single"
   } else {
     match.arg(r.template.layout, c("single", "multi"))
   }
@@ -108,12 +111,24 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
     project.dir <- getwd()
   }
 
-  if (is.null(proj.name) || isTRUE(trimws(proj.name) == "")) {
-    proj.name <- basename(project.dir)
+  if (is.null(proj.id) || isTRUE(trimws(proj.id) == "")) {
+    proj.id <- basename(project.dir)
   }
 
-  if (is.null(proj.num) || isTRUE(trimws(proj.num) == "")) {
-    proj.num <- proj.name
+  # Generate proj.id if NULL or empty (Slugify logic)
+  if (is.null(proj.id) | isTRUE(trimws(proj.id) == "")) {
+      clean_id <- tolower(proj.title)
+      clean_id <- gsub("[^a-z0-9_ ]", "", clean_id) # remove punctuation/special chars
+      clean_id <- gsub("\\s+", "_", trimws(clean_id)) # spaces to underscores
+      proj.id <- substr(clean_id, 1, 15) # truncate to keep it highly concise
+      
+      # Fallback if slugify produces empty string (e.g. only special characters passed)
+      if (proj.id == "") {
+          proj.id <- "project"
+      }
+  } else {
+      # Ensure a user-provided ID is clean of trailing/leading spaces
+      proj.id <- trimws(proj.id)
   }
 
   if (is.null(start.date) || isTRUE(trimws(start.date) == "")) {
@@ -132,7 +147,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
   }
 
   project.dir <- normalizePath(project.dir, winslash = "/", mustWork = FALSE)
-  proj.root <- file.path(project.dir, proj.name)
+  proj.root <- file.path(project.dir, proj.id)
   if (!dir.exists(proj.root)) {
     dir.create(proj.root, recursive = TRUE, showWarnings = FALSE)
   }
@@ -185,7 +200,8 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
       makeRTemplate(
         r.dir = r.dir,
         r.name = r.name,
-        proj.name = proj.num,
+        proj.title = proj.title,
+        proj.id = proj.id,
         start.date = start.date,
         version = version,
         client = client,
@@ -204,7 +220,8 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
       makeRmdTemplate(
         rmd.dir = rmd.dir,
         rmd.name = rmd.name,
-        proj.name = proj.num,
+        proj.title = proj.title,
+        proj.id = proj.id,
         start.date = start.date,
         version = version,
         client = client,
@@ -226,7 +243,8 @@ makeSnapshot <- function(project.dir = getwd(), proj.name = NULL, proj.num = NUL
       makeSasTemplate(
         sas.dir = sas.dir,
         sas.name = sas_file_name,
-        proj.name = proj.num,
+        proj.title = proj.title,
+        proj.id = proj.id,
         start.date = start.date,
         version = version,
         client = client,

@@ -7,10 +7,13 @@
 #' @param sas.dir A character string specifying the file path where the template
 #'     will be stored. Defaults to {getwd()}.
 #' @param sas.name NULL or a character string specifying the name of the .sas file.
-#'     If NULL, the file will be named p[proj.name]_sas[currentdate]_v[version]
+#'     If NULL, the file will be named [proj.id]_sas[currentdate]_v[version]
 #'     or sas[currentdate].
-#' @param proj.name NULL or a character string providing the name of the project
-#'     to be included in the template name and/or header.
+#' @param proj.title A character string providing the full, descriptive project title 
+#'     to be used in template headers and memo subject lines.
+#' @param proj.id NULL or a short, clean character string providing a project identifier 
+#'     to be used as the directory name and as a prefix for template filenames. 
+#'     If NULL, a clean identifier will be automatically derived from [proj.title].
 #' @param start.date NULL or a character string providing the date to be included
 #'     in the template header. Defaults to today's date.
 #' @param version NULL or a character string providing the project version to be
@@ -49,7 +52,8 @@
 #' @author Rocio Lopez, \email{Rocio.LopezMoscoso@cuanschutz.edu}
 #'
 #' @export
-makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL,
+makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, 
+                            proj.id = NULL, proj.title = NULL,
                             start.date = format(Sys.Date(), "%B %d, %Y"),
                             version = "1", client = NULL, client.dept = NULL,
                             main.statistician = NULL, stats.collab = NULL, 
@@ -78,14 +82,14 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
   }
   if (is.null(sas.name) | isTRUE(trimws(sas.name) == "")) {
     if (is.null(version) | isTRUE(trimws(version)) == "") {
-      if (!(is.null(proj.name)) | isFALSE(trimws(proj.name) == ""))
-        sas.name <- paste0("p", proj.name, "_sas", date.stamp)
+      if (!(is.null(proj.id)) | isFALSE(trimws(proj.id) == ""))
+        sas.name <- paste0("p", proj.id, "_sas", date.stamp)
       else
         sas.name <- paste0("sas", date.stamp)
     }
     else {
-      if (!(is.null(proj.name)) | isFALSE(trimws(proj.name) == ""))
-        sas.name <- paste0("p", proj.name, "_sas", date.stamp, "_v", version)
+      if (!(is.null(proj.id)) | isFALSE(trimws(proj.id) == ""))
+        sas.name <- paste0("p", proj.id, "_sas", date.stamp, "_v", version)
       else
         sas.name <- paste0("sas", date.stamp, "_v", version)
     }
@@ -115,7 +119,8 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
         "______________________________________________________________________________",
         " ",
         paste0("AUTHOR:  ", if (!is.null(main.statistician) && !isTRUE(trimws(main.statistician) == "")) main.statistician else ""),
-        paste0("PROJECT: ", if (!is.null(proj.name) && !isTRUE(trimws(proj.name) == "")) proj.name else ""),
+        paste0("PROJECT ID: ", if (!is.null(proj.id) && !isTRUE(trimws(proj.id) == "")) proj.id else ""),
+        paste0("TITLE: ", if (!is.null(proj.title) && !isTRUE(trimws(proj.title) == "")) proj.title else ""),
         paste0("VERSION: ", if (!is.null(version) && !isTRUE(trimws(version) == "")) version else "1", " (", date.stamp, ")"),
         "______________________________________________________________________________",
         " ",
@@ -129,7 +134,8 @@ makeSasTemplate <- function(sas.dir = getwd(), sas.name = NULL, proj.name = NULL
     } else {
       header_lines <- c(
         "/******************************************************************************",
-        paste0("PROJECT: ", proj.name),
+        paste0("PROJECT ID: ", if (!is.null(proj.id) && !isTRUE(trimws(proj.id) == "")) proj.id else ""),
+        paste0("TITLE: ", if (!is.null(proj.title) && !isTRUE(trimws(proj.title) == "")) proj.title else ""),
         paste0("START DATE: ", start.date),
         paste0("VERSION: ", version),
         paste0("PROGRAM: ", sas_file_path),

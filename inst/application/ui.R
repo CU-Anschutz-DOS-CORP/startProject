@@ -80,17 +80,16 @@ ui <- fluidPage(
                             placeholder = "Parent directory where project will be created"),
                         
                         textInput(
-                            inputId = 'proj.name',
-                            label = 'Project Name',
-                            # value = "Project Name",
+                            inputId = 'proj.title',
+                            label = 'Project Title',
                             width = '100%',
-                            placeholder = "Short name used to name main project folder"),
+                            placeholder = "Project title included in template headers"),
                         
                         textInput(
-                            inputId = 'proj.num',
+                            inputId = 'proj.id',
                             label = 'Project Number / ID',
                             width = '100%',
-                            placeholder = "If blank, project name used"),
+                            placeholder = "Used for directory and file names"),
                         
                         dateInput(
                             inputId = 'start.date',
@@ -186,22 +185,36 @@ ui <- fluidPage(
                                 width = '100%',
                                 placeholder = "Subfolders created inside each analysis snapshot folder")
                         ),
-                        
-                        checkboxGroupInput(
-                            inputId = "templates",
-                            label = "Choose Templates to Create",
-                            choices = c("Memo" = "memo", "R" = "r", "Rmd" = "rmd", "SAS" = "sas"),
-                            selected = c("memo", "r", "rmd", "sas"),
-                            inline = TRUE)
                     )
                 ),
                 
                 # Templates Options Panel
                 div(
                     class = "card",
-                    div(class = "card-header bg-secondary text-white", "3. Template Settings"),
+                    div(class = "card-header bg-secondary text-white", "3. Template Options & Settings"),
                     div(
                         class = "card-body",
+                        
+                        # Choose templates 
+                        div(
+                            id = "template_choice_section",
+                            tags$h4(id = "tempChoiceHeader", class = "text-info border-bottom pb-1", "Choose Templates to Create"),
+                            # Inject custom CSS targeting this specific input ID's options group
+                            tags$head(
+                                tags$style(HTML("#templates .shiny-options-group {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr); /* Forces exactly 2 equal columns */
+                                grid-gap: 10px 20px;                   /* Adds vertical and horizontal spacing */
+                                }"))
+                            ),
+                            checkboxGroupInput(
+                                inputId = "templates",
+                                label = "Choose Templates to Create",
+                                choices = c("README" = "readme", "Memo" = "memo", "R" = "r", "Rmd" = "rmd", "SAS" = "sas"),
+                                selected = c("memo", "readme", "r", "rmd", "sas"),
+                                inline = FALSE # Set to FALSE so CSS Grid can handle the alignment entirely
+                            )
+                        ),                        
                         
                         # MEMO TEMPLATE
                         div(
@@ -219,9 +232,10 @@ ui <- fluidPage(
                                 div(class = "col-md-6",
                                     textInput(
                                         inputId = 'memo.re',
-                                        label = 'Memo Subject (RE:)',
+                                        label = 'Subject line for memo',
                                         width = '100%',
-                                        placeholder = "Subject line for memo")
+                                        placeholder = "Defaults to project title"
+                                        )
                                 )
                             )
                         ),

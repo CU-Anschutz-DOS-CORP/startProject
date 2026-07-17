@@ -7,7 +7,8 @@
 makeRTemplate(
   r.dir = getwd(),
   r.name = NULL,
-  proj.name = NULL,
+  proj.id = NULL,
+  proj.title = NULL,
   start.date = format(Sys.Date(), "\%B \%d, \%Y"),
   version = "1",
   client = NULL,
@@ -25,11 +26,14 @@ makeRTemplate(
 will be stored. Defaults to {getwd()}.}
 
 \item{r.name}{NULL or a character string specifying the name of the .R file.
-If NULL, the file will be named p[proj.name]_r[currentdate]_v[version] or
-r[currentdate].}
+    If NULL, the file will be named [proj.id]_r[currentdate]_v[version] or
+    r[currentdate].
+#' @param proj.title A character string providing the full, descriptive project title 
+    to be used in template headers and memo subject lines.}
 
-\item{proj.name}{NULL or a character string providing the name of the project
-to be included in the template name and/or header.}
+\item{proj.id}{NULL or a short, clean character string providing a project identifier 
+to be used as the directory name and as a prefix for template filenames. 
+If NULL, a clean identifier will be automatically derived from [proj.title].}
 
 \item{start.date}{NULL or a character string providing the date to be included
 in the template header. Defaults to today's date.}

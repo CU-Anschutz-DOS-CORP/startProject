@@ -12,3 +12,8 @@ output: github_document
 
 * New snap shot directory structure is now available.
 * New Shiny app look.
+
+# startProject 0.3.0  <span style="font-size:smaller;color:lightgray">2026-07-17</span>
+
+* `proj.name` and `proj.num` have been removed and replaced with `proj.title` and `proj.id`.
+* README file can now be requested with either legacy or snapshot directory structure.
