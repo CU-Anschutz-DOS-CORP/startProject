@@ -103,19 +103,32 @@ create inside the analysis snapshot directory. Defaults to the standard
 Snapshot layout: orig_data, code, data, output_raw, graphs,
 final_styled, and memo.}
 
-\item{sas.template.layout}{A character string specifying the SAS template layout
-to use for Snapshot projects. Supported values are "single" and "multi".
+\item{sas.template.layout}{A character string specifying the SAS template layout.
+Supported values are "single" and "multi". 
+Choose Single file to generate a unified, all-in-one program template ideal 
+for straightforward analyses. Choose Multi-file to generate structured, 
+separate scripts for setup, data management, and analysis, providing a 
+modular framework that is easier to customize and scale with specialized additions.
 Defaults to "single".}
 
-\item{r.template.layout}{A character string specifying the R template layout
-to use for Snapshot projects. Supported values are "single" and "multi".
-Defaults to "single".}
+\item{r.template.layout}{A character string specifying the R template layout.
+Supported values are "single" and "multi". Defaults to "single".}
 
 \item{sas.header.style}{A character string specifying the SAS header style.
-Supported values are "default" and "simple". Defaults to "default".}
+Supported values are "default" and "simple". 
+Choose the Default header for major collaborative or client-facing analysis 
+programs to capture comprehensive study metadata, collaborator details, 
+and external dependencies. Choose the Simple header for utility, modular, 
+or setup scripts that require only lightweight file tracking and execution notes.
+Defaults to "default".}
 
 \item{r.header.style}{A character string specifying the R header style.
-Supported values are "default" and "simple". Defaults to "default".}
+Supported values are "default" and "simple".
+Choose the Default header for major collaborative or client-facing analysis 
+programs to capture comprehensive study metadata, collaborator details, 
+and external dependencies. Choose the Simple header for utility, modular, 
+or setup scripts that require only lightweight file tracking and execution notes.
+Defaults to "default".}
 }
 \description{
 `makeSnapshot()` creates a dated analysis snapshot folder, and template files
