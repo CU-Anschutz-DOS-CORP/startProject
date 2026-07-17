@@ -163,12 +163,12 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
                           "final_styled", "memo")
   }
 
-  if (length(grep("memo", tolower(templates), fixed = TRUE)) > 0) {
+  if ("memo" %in% tolower(templates)) {
     analysis_folders <- unique(c(analysis_folders, "memo"))
   }
-  if (length(grep("r", tolower(templates), fixed = TRUE)) > 0 ||
-      length(grep("rmd", tolower(templates), fixed = TRUE)) > 0 ||
-      length(grep("sas", tolower(templates), fixed = TRUE)) > 0) {
+  if ("r" %in% tolower(templates) ||
+      "rmd" %in% tolower(templates) ||
+      "sas" %in% tolower(templates)) {
     analysis_folders <- unique(c(analysis_folders, "code"))
   }
 
@@ -180,7 +180,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
   }
 
   if (length(templates) > 0) {
-    if (length(grep("memo", tolower(templates), fixed = TRUE)) > 0) {
+    if ("memo" %in% tolower(templates)) {
       memo.dir <- file.path(snapshot.dir, "memo")
       makeMemoTemplate(
         memo.dir = memo.dir,
@@ -195,7 +195,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
       )
     }
 
-    if (length(grep("r", tolower(templates), fixed = TRUE)) > 0) {
+    if ("r" %in% tolower(templates)) {
       r.dir <- file.path(snapshot.dir, "code")
       makeRTemplate(
         r.dir = r.dir,
@@ -215,7 +215,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
       )
     }
 
-    if (length(grep("rmd", tolower(templates), fixed = TRUE)) > 0) {
+    if ("rmd" %in% tolower(templates)) {
       rmd.dir <- file.path(snapshot.dir, "code")
       makeRmdTemplate(
         rmd.dir = rmd.dir,
@@ -233,7 +233,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
       )
     }
 
-    if (length(grep("sas", tolower(templates), fixed = TRUE)) > 0) {
+    if ("sas" %in% tolower(templates)) {
       sas.dir <- file.path(snapshot.dir, "code")
       sas_file_name <- if (!is.null(sas.name) && !isTRUE(trimws(sas.name) == "")) {
         sas.name
