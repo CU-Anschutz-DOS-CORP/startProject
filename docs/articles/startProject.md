@@ -115,13 +115,13 @@ The package may utilize several document templates which can be
 customized:
 
 1.  memoTemplate.docx
-2.  basefile.R
+2.  basefile.R, if layout = “single”
 3.  multi_setup_basefile.R, multi_data_management_baserfile.R, and
     multi_analysis_basefile.R, if layout = “multi”
 4.  basefile.Rmd
 5.  basefile.sas, if layout = “single”
-6.  3.  multi_setup_basefile.sas, multi_data_management_baserfile.sas,
-        and multi_analysis_basefile.sas, if layout = “multi”
+6.  multi_setup_basefile.sas, multi_data_management_baserfile.sas, and
+    multi_analysis_basefile.sas, if layout = “multi”
 7.  basefile.md, if structure = “snapshot”
 
 To use customized templates you can either modify those included or save

@@ -61,9 +61,10 @@
 <span>  client.dept <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  main.statistician <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  stats.collab <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  subfolders <span class="op">=</span> <span class="st">"communications, data, graphs, memo, orig_data, others, r, sas, temp"</span>,</span>
+<span>  subfolders <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  templates <span class="op">=</span> <span class="st">"memo, R, Rmd, sas"</span>,</span>
 <span>  structure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"legacy"</span>, <span class="st">"snapshot"</span><span class="op">)</span>,</span>
+<span>  snapshot.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  analysis.subfolders <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"orig_data"</span>, <span class="st">"code"</span>, <span class="st">"data"</span>, <span class="st">"output_raw"</span>, <span class="st">"graphs"</span>,</span>
 <span>    <span class="st">"final_styled"</span>, <span class="st">"memo"</span><span class="op">)</span>,</span>
 <span>  sas.template.layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"single"</span>, <span class="st">"multi"</span><span class="op">)</span>,</span>
@@ -135,8 +136,10 @@ collaborators to be included as authors in the templates.</p></dd>
 
 <dt id="arg-subfolders">subfolders<a class="anchor" aria-label="anchor" href="#arg-subfolders"></a></dt>
 <dd><p>A character string providing a comma delimited list of
-sub-folders to be created. Defaults to "communications, data, graphs,
-memo, orig_data, others, r, sas, temp".</p></dd>
+sub-folders to be created. If NULL, defaults to "00_protocol_and_irb,
+01_data_specs, 02_docs, 03_include, 04_manuscript, 05_presentations,
+06_external_resources" if structure="snapshot" and "communications,
+data, graphs, memo, orig_data, others, r, sas, temp" if structure="legacy".</p></dd>
 
 
 <dt id="arg-templates">templates<a class="anchor" aria-label="anchor" href="#arg-templates"></a></dt>
@@ -150,16 +153,28 @@ Defaults to "memo, R, Rmd, sas".</p></dd>
 Supported values are "legacy" and "snapshot". Defaults to "legacy".</p></dd>
 
 
+<dt id="arg-snapshot-name">snapshot.name<a class="anchor" aria-label="anchor" href="#arg-snapshot-name"></a></dt>
+<dd><p>NULL or a character string providing the analysis snapshot
+folder name. If NULL, an analysis_YYYYMMDD folder will be created.
+Ignored if structure = "legacy".</p></dd>
+
+
 <dt id="arg-analysis-subfolders">analysis.subfolders<a class="anchor" aria-label="anchor" href="#arg-analysis-subfolders"></a></dt>
 <dd><p>A character vector providing the subfolders to
 create inside each analysis snapshot directory. Defaults to the standard
 Snapshot layout: orig_data, code, data, output_raw, graphs,
-final_styled, and memo.</p></dd>
+final_styled, and memo.
+Ignored if structure = "legacy".</p></dd>
 
 
 <dt id="arg-sas-template-layout">sas.template.layout<a class="anchor" aria-label="anchor" href="#arg-sas-template-layout"></a></dt>
 <dd><p>A character string specifying the SAS template layout.
-Supported values are "single" and "multi". Defaults to "single".</p></dd>
+Supported values are "single" and "multi".
+Choose Single file to generate a unified, all-in-one program template ideal
+for straightforward analyses. Choose Multi-file to generate structured,
+separate scripts for setup, data management, and analysis, providing a
+modular framework that is easier to customize and scale with specialized additions.
+Defaults to "single".</p></dd>
 
 
 <dt id="arg-r-template-layout">r.template.layout<a class="anchor" aria-label="anchor" href="#arg-r-template-layout"></a></dt>
@@ -169,12 +184,22 @@ Supported values are "single" and "multi". Defaults to "single".</p></dd>
 
 <dt id="arg-sas-header-style">sas.header.style<a class="anchor" aria-label="anchor" href="#arg-sas-header-style"></a></dt>
 <dd><p>A character string specifying the SAS header style.
-Supported values are "default" and "simple". Defaults to "default".</p></dd>
+Supported values are "default" and "simple".
+Choose the Default header for major collaborative or client-facing analysis
+programs to capture comprehensive study metadata, collaborator details,
+and external dependencies. Choose the Simple header for utility, modular,
+or setup scripts that require only lightweight file tracking and execution notes.
+Defaults to "default".</p></dd>
 
 
 <dt id="arg-r-header-style">r.header.style<a class="anchor" aria-label="anchor" href="#arg-r-header-style"></a></dt>
 <dd><p>A character string specifying the R header style.
-Supported values are "default" and "simple". Defaults to "default".</p></dd>
+Supported values are "default" and "simple".
+Choose the Default header for major collaborative or client-facing analysis
+programs to capture comprehensive study metadata, collaborator details,
+and external dependencies. Choose the Simple header for utility, modular,
+or setup scripts that require only lightweight file tracking and execution notes.
+Defaults to "default".</p></dd>
 
 
 <dt id="arg-memo-name">memo.name<a class="anchor" aria-label="anchor" href="#arg-memo-name"></a></dt>

@@ -17,9 +17,10 @@ startProject(
   client.dept = NULL,
   main.statistician = NULL,
   stats.collab = NULL,
-  subfolders = "communications, data, graphs, memo, orig_data, others, r, sas, temp",
+  subfolders = NULL,
   templates = "memo, R, Rmd, sas",
   structure = c("legacy", "snapshot"),
+  snapshot.name = NULL,
   analysis.subfolders = c("orig_data", "code", "data", "output_raw", "graphs",
     "final_styled", "memo"),
   sas.template.layout = c("single", "multi"),
@@ -90,8 +91,11 @@ startProject(
 - subfolders:
 
   A character string providing a comma delimited list of sub-folders to
-  be created. Defaults to "communications, data, graphs, memo,
-  orig_data, others, r, sas, temp".
+  be created. If NULL, defaults to "00_protocol_and_irb, 01_data_specs,
+  02_docs, 03_include, 04_manuscript, 05_presentations,
+  06_external_resources" if structure="snapshot" and "communications,
+  data, graphs, memo, orig_data, others, r, sas, temp" if
+  structure="legacy".
 
 - templates:
 
@@ -104,16 +108,28 @@ startProject(
   A character string specifying the project layout to create. Supported
   values are "legacy" and "snapshot". Defaults to "legacy".
 
+- snapshot.name:
+
+  NULL or a character string providing the analysis snapshot folder
+  name. If NULL, an analysis_YYYYMMDD folder will be created. Ignored if
+  structure = "legacy".
+
 - analysis.subfolders:
 
   A character vector providing the subfolders to create inside each
   analysis snapshot directory. Defaults to the standard Snapshot layout:
   orig_data, code, data, output_raw, graphs, final_styled, and memo.
+  Ignored if structure = "legacy".
 
 - sas.template.layout:
 
   A character string specifying the SAS template layout. Supported
-  values are "single" and "multi". Defaults to "single".
+  values are "single" and "multi". Choose Single file to generate a
+  unified, all-in-one program template ideal for straightforward
+  analyses. Choose Multi-file to generate structured, separate scripts
+  for setup, data management, and analysis, providing a modular
+  framework that is easier to customize and scale with specialized
+  additions. Defaults to "single".
 
 - r.template.layout:
 
@@ -123,12 +139,22 @@ startProject(
 - sas.header.style:
 
   A character string specifying the SAS header style. Supported values
-  are "default" and "simple". Defaults to "default".
+  are "default" and "simple". Choose the Default header for major
+  collaborative or client-facing analysis programs to capture
+  comprehensive study metadata, collaborator details, and external
+  dependencies. Choose the Simple header for utility, modular, or setup
+  scripts that require only lightweight file tracking and execution
+  notes. Defaults to "default".
 
 - r.header.style:
 
   A character string specifying the R header style. Supported values are
-  "default" and "simple". Defaults to "default".
+  "default" and "simple". Choose the Default header for major
+  collaborative or client-facing analysis programs to capture
+  comprehensive study metadata, collaborator details, and external
+  dependencies. Choose the Simple header for utility, modular, or setup
+  scripts that require only lightweight file tracking and execution
+  notes. Defaults to "default".
 
 - memo.name:
 
