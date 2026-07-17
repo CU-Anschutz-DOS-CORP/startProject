@@ -82,9 +82,9 @@ ui <- fluidPage(
                         textInput(
                             inputId = 'proj.name',
                             label = 'Project Name',
-                            value = "Project Name",
+                            # value = "Project Name",
                             width = '100%',
-                            placeholder = "Short name for main project folder"),
+                            placeholder = "Short name used to name main project folder"),
                         
                         textInput(
                             inputId = 'proj.num',
