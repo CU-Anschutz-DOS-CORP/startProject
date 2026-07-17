@@ -41,8 +41,8 @@ startProject(
 \item{main.dir}{A character string specifying the file path where the project
 directory will be created. Defaults to {getwd()}.}
 
-\item{proj.name}{NULL or a character string providing the name of the project
-to be included in the templates.}
+\item{proj.name}{A short character string providing the name or number to be 
+used as the directory name and in template headers.}
 
 \item{proj.num}{NULL or a character string providing a project number in the
 directory name and templates. If NULL, [proj.name] will be used instead.}

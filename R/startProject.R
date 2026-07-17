@@ -7,8 +7,8 @@
 #'
 #' @param main.dir A character string specifying the file path where the project
 #'     directory will be created. Defaults to {getwd()}.
-#' @param proj.name NULL or a character string providing the name of the project
-#'     to be included in the templates.
+#' @param proj.name A short character string providing the name or number to be 
+#'     used as the directory name and in template headers.
 #' @param proj.num NULL or a character string providing a project number in the
 #'     directory name and templates. If NULL, [proj.name] will be used instead.
 #' @param start.date NULL or a character string providing the date to be included
@@ -231,7 +231,7 @@ startProject <- function(main.dir = getwd(), proj.name = "project name", proj.nu
     
     ## If main_dir does not exist, stop
     if (!(dir.exists(main.dir))) {
-        stop("Path specified under 'main,dir' does not exist")
+        stop("Path specified under 'main.dir' does not exist")
     }
     
     ## Define folder and file permissions
