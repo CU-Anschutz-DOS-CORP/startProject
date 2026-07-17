@@ -50,8 +50,8 @@ startProject(
 
 - proj.name:
 
-  NULL or a character string providing the name of the project to be
-  included in the templates.
+  A short character string providing the name or number to be used as
+  the directory name and in template headers.
 
 - proj.num:
 
