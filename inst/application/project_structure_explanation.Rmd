@@ -8,17 +8,17 @@ This is a software-centric layout that organizes project assets strictly by file
 
 ```
 [Project_Root]/
-├── communications
-├── data					   <-- .sas7bdat and .rds work files
-├── graphs					   <-- PDF/PNG visual outputs
-├── memo					   <-- Written report for PI
-├── orig_data				   <-- Specific data pull/Chart review data
-├── others
-├── r						   <-- R code files
-├── temp
+├── communications/
+├── data/                      <-- .sas7bdat and .rds work files
+├── graphs/                    <-- PDF/PNG visual outputs
+├── memo/                      <-- Written report for PI
+├── orig_data/                 <-- Specific data pull/Chart review data
+├── others/
+├── r/                         <-- R code files
+├── temp/
 │
-└── sas						   <-- SAS code files
-    └── _include/			   <-- <-- Project-specific SAS Macros, functions, etc.
+└── sas/                       <-- SAS code files
+    └── _include/              <-- Project-specific SAS Macros, functions, etc.
 ```
 
 ---
