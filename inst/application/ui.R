@@ -119,17 +119,6 @@ ui <- fluidPage(
                                     placeholder = "e.g., 1, 2, 3")
                             )
                         ),
-                        
-                        # Dynamic Input: Snapshot Name (Only visible when structure == "snapshot")
-                        conditionalPanel(
-                            condition = "input.structure == 'snapshot'",
-                            textInput(
-                                inputId = 'snapshot.name',
-                                label = 'Snapshot Name',
-                                value = "",
-                                width = '100%',
-                                placeholder = "analysis_YYYYMMDD")
-                        ),
 
                         textInput(
                             inputId = 'client',
@@ -170,17 +159,27 @@ ui <- fluidPage(
                         class = "card-body",
                         textInput(
                             inputId = 'subfolders',
-                            label = 'Subfolders to Create (Comma delimited)',
+                            label = 'List of Subfolders to Create (Comma delimited)',
                             value = "communications, data, graphs, memo, orig_data, others, r, sas, temp",
-                            width = '100%',
-                            placeholder = "List of subfolders to create (comma delimited)"),
+                            width = '100%'),
+                        
+                        # Dynamic Input: Snapshot Name (Only visible when structure == "snapshot")
+                        conditionalPanel(
+                            condition = "input.structure == 'snapshot'",
+                            textInput(
+                                inputId = 'snapshot.name',
+                                label = 'Analysis Snapshot Folder Name',
+                                value = "",
+                                width = '100%',
+                                placeholder = "analysis_YYYYMMDD")
+                        ),                        
                         
                         # Dynamic Input: Analysis Subfolders (Only visible when structure == "snapshot")
                         conditionalPanel(
                             condition = "input.structure == 'snapshot'",
                             textInput(
                                 inputId = 'analysis.subfolders',
-                                label = 'Analysis Subfolders to Create (Comma delimited)',
+                                label = 'List of Subfolders to Create Within Analysis Snapshot (Comma delimited)',
                                 value = "orig_data, code, data, output_raw, graphs, final_styled, memo",
                                 width = '100%',
                                 placeholder = "Subfolders created inside each analysis snapshot folder")
