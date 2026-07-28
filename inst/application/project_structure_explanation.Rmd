@@ -1,0 +1,49 @@
+# Project Structure Overview
+
+---
+
+## Legacy Structure
+
+This is a software-centric layout that organizes project assets strictly by file type and programming language.
+
+```
+[Project_Root]/
+├── communications
+├── data					   <-- .sas7bdat and .rds work files
+├── graphs					   <-- PDF/PNG visual outputs
+├── memo					   <-- Written report for PI
+├── orig_data				   <-- Specific data pull/Chart review data
+├── others
+├── r						   <-- R code files
+├── temp
+│
+└── sas						   <-- SAS code files
+    └── _include/			   <-- <-- Project-specific SAS Macros, functions, etc.
+```
+
+---
+
+## Snapshot Structure
+
+This is a time-stamped version layout that separates permanent, project-wide administrative assets from time-bound analytic runs. It creates a complete, frozen "snapshot" of a specific analysis, allowing you to re-run past results or start a new analysis version without breaking historic code or overwriting old outputs.
+
+```
+[Project_Root]/
+├── 00_protocol_and_irb/        <-- IRB, DUA, and Study Protocol
+├── 01_data_specs/              <-- Data dictionaries and coding crosswalks
+├── 02_docs/                    <-- Your structural definitions and project logic
+├── 03_include/                 <-- Project-specific SAS Macros, R Functions, and Formats
+├── 04_manuscript/              <-- Drafts and reviewer responses
+├── 05_presentations/           <-- Conference slides and posters
+├── 06_external_resources/      <-- Relevant literature docs
+├── README.md                   <-- Master Project Guide
+│
+└── analysis_2026-04-27/        <-- Version 1 (V1)
+    ├── orig_data/              <-- Specific data pull/Chart review data
+    ├── code/                   <-- 00_setup.sas, 01_clean.sas, 02_viz.R
+    ├── data/                   <-- .sas7bdat and .rds work files
+    ├── output_raw/             <-- Unedited output and tables
+    ├── graphs/                 <-- PDF/PNG visual outputs
+    ├── final_styled/           <-- Manually edited/formatted results
+    └── memo/                   <-- Written report for PI
+```
