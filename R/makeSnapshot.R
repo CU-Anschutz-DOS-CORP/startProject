@@ -107,11 +107,15 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
   sas.header.style <- match.arg(sas.header.style, c("default", "simple"))
   r.header.style <- match.arg(r.header.style, c("default", "simple"))
 
+  templates <- trimws(unlist(strsplit(templates, ",", fixed = TRUE)))
+  templates <- tolower(templates[nzchar(templates)])
+
   if (is.null(project.dir) || isTRUE(trimws(project.dir) == "")) {
     project.dir <- getwd()
   }
 
-  if (is.null(proj.id) || isTRUE(trimws(proj.id) == "")) {
+  use_existing_project_dir <- is.null(proj.id) || isTRUE(trimws(proj.id) == "")
+  if (use_existing_project_dir) {
     proj.id <- basename(project.dir)
   }
 
@@ -147,7 +151,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
   }
 
   project.dir <- normalizePath(project.dir, winslash = "/", mustWork = FALSE)
-  proj.root <- file.path(project.dir, proj.id)
+  proj.root <- if (use_existing_project_dir) project.dir else file.path(project.dir, proj.id)
   if (!dir.exists(proj.root)) {
     dir.create(proj.root, recursive = TRUE, showWarnings = FALSE)
   }
@@ -238,7 +242,7 @@ makeSnapshot <- function(project.dir = getwd(), proj.title = NULL, proj.id = NUL
       sas_file_name <- if (!is.null(sas.name) && !isTRUE(trimws(sas.name) == "")) {
         sas.name
       } else {
-        paste0("p", proj.num, "_sas", format(as.Date(start.date, format = "%B %d, %Y"), "%Y%m%d"))
+        paste0("p", proj.id, "_sas", format(as.Date(start.date, format = "%B %d, %Y"), "%Y%m%d"))
       }
       makeSasTemplate(
         sas.dir = sas.dir,
