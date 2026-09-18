@@ -27,6 +27,8 @@ generate memo and code templates.
     \code{\link{makeRTemplate}}: A function to generate a .R template.
 
     \code{\link{makeSasTemplate}}: A function to generate a .sas template.
+    
+    \code{\link{makeSnapshot}}: A function to create a snapshot-style analysis subfolder.
 }
 
 \section{Details}{
